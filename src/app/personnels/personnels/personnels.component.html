@@ -1,0 +1,300 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <button class="btn btn-light float-left " role="button" aria-disabled="true" disabled>
+                        <i class="fa fa-align-justify"></i> Danh sách nhân sự
+                    </button>
+                    <button type="button" class="btn btn-light float-right" (click)="add.show()">
+                        Thêm mới
+                    </button>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Họ tên</th>
+                                <th scope="col">Phòng ban</th>
+                                <th scope="col">Chức danh</th>
+                                <th scope="col">Chức vụ</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">SĐT</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let r of users, let i = index" (dblclick)="[detail.show(),getUserById(r.id)]">
+                                <th scope="row">{{i}}</th>
+                                <td>{{r.full_name}}</td>
+                                <td>{{r.department_name}}</td>
+                                <td>{{r.job_title_name}}</td>
+                                <td>{{r.position_name}}</td>
+                                <td>{{r.email}}</td>
+                                <td>0123456789</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="test">test</div>
+
+
+
+<!-- /.modal -->
+<!-- Thông tin nhân sự -->
+
+<div bsModal #detail="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin nhân sự</h4>
+                <button type="button" class="close" (click)="detail.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="putForm" class="container row" *ngIf="userSelected">
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput1">Tên đăng nhập</label>
+                        <input type="text" class="form-control" placeholder="username" [value]="userSelected.username" readonly>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput2">Mã nhân viên</label>
+                        <input type="text" class="form-control" placeholder="code" [value]="userSelected.code" formControlName="put_code">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput13">Phân quyền</label>
+                        <select class="custom-select" [value]="userSelected.role_id" formControlName="put_role_id">
+                            <option selected>Choose...</option>
+                            <option value="1">Quản trị hệ thống</option>
+                            <option value="2">Quản trị viên</option>
+                            <option value="3">Người dùng</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput15">Trạng thái</label>
+                        <select class="custom-select" [value]="userSelected.active" formControlName="put_active">
+                            <option selected>Choose...</option>
+                            <option value="true">Hoạt động</option>
+                            <option value="false">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput4">Họ tên</label>
+                        <input type="text" class="form-control" placeholder="full name" [value]="userSelected.full_name" formControlName="put_full_name">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput3">Email</label>
+                        <input type="email" class="form-control" placeholder="name@example.com" [value]="userSelected.email" formControlName="put_email">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput5">Ngày sinh</label>
+                        <input type="datetime" class="form-control" placeholder="dd/mm/yyyy" [value]="userSelected.birth_date" formControlName="put_birth_date">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput6">Giới tính</label>
+                        <input type="text" class="form-control" placeholder="nam/nữ" [value]="userSelected.gender" formControlName="put_gender">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput7">Nơi ở hiện tại</label>
+                        <input type="tel" class="form-control" placeholder="address1" [value]="userSelected.address" formControlName="put_address">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput8">Quê quán</label>
+                        <input type="tel" class="form-control" placeholder="address2" [value]="userSelected.current_address" formControlName="put_current_address">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput12">Số điện thoại</label>
+                        <input type="email" class="form-control" placeholder="0123456">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput12">Chức vụ</label>
+                        <select class="custom-select" [value]="userSelected.position_id" formControlName="put_position_id">
+                            <option selected>Choose...</option>
+                            <option value="22">a1</option>
+                            <option value="27">a11111</option>
+                            <option value="23">a2</option>
+                            <option value="20">a3</option>
+                            <option value="26">aaaaaaaxxxx</option>
+                            <option value="25">aaaazzzz</option>
+                            <option value="28">ak</option>
+                            <option value="30">au</option>
+                            <option value="29">avvb</option>
+                            <option value="32">aw</option>
+                            <option value="3">BA</option>
+                            <option value="19">ddd23</option>
+                            <option value="24">g3</option>
+                            <option value="1">Lập trình viên</option>
+                            <option value="21">sss</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput11">Chức danh</label>
+                        <select class="custom-select" [value]="userSelected.job_title_id" formControlName="put_job_title_id">
+                            <option selected>Choose...</option>
+                            <option value="9">aaazzz</option>
+                            <option value="1">Giám đốc</option>
+                            <option value="8">kkkkk</option>
+                            <option value="2">Nhân viên</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput10">Phòng ban</label>
+                        <select class="custom-select" id="" [value]="userSelected.department_id" formControlName="put_department_id">
+                            <option selected>Choose...</option>
+                            <option value="16">ffffffffff</option>
+                            <option value="9">ke toan long</option>
+                            <option value="1">Phòng công nghệ thông tin</option>
+                            <option value="2">Phòng kế toán</option>
+                            <option value="5">Phòng kế toán 3</option>
+                            <option value="6">Phòng kế toán 4</option>
+                            <option value="7">Phòng kế toán 5</option>
+                            <option value="8">Phòng kế toán 6</option>
+                            <option value="17">za</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput14">Cấp bậc</label>
+                        <select class="custom-select" id="">
+                            <option selected>Choose...</option>
+                            <option value="1">nam</option>
+                            <option value="2">nữ</option>
+                            <option value="3">other</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput9">Mô tả</label>
+                        <br>
+                        <textarea name="describe" cols="80" rows="4" [value]="userSelected.description" formControlName="put_description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="detail.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="putUserById(userSelected.id)">Save changes</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+
+
+<!-- /.modal -->
+<!-- Thêm mới nhân sự -->
+
+<div bsModal #add="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm mới nhân sự</h4>
+                <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="postForm" class="container row">
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput1">Tên đăng nhập</label>
+                        <input type="text" class="form-control" placeholder="username" formControlName="post_username">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput2">Mã nhân viên</label>
+                        <input type="text" class="form-control" placeholder="code" formControlName="post_code">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput13">Phân quyền</label>
+                        <select class="custom-select" formControlName="post_role_id">
+                            <option *ngFor="let r of roles" value="r.id">{{r.code}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput15">Trạng thái</label>
+                        <select class="custom-select" formControlName="post_active">
+                            <option value="true">Hoạt động</option>
+                            <option value="false">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput4">Họ tên</label>
+                        <input type="text" class="form-control" placeholder="full name" formControlName="post_full_name">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput3">Email</label>
+                        <input type="email" class="form-control" placeholder="name@example.com" formControlName="post_email">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput5">Ngày sinh</label>
+                        <input type="datetime" class="form-control" placeholder="dd/mm/yyyy" formControlName="post_birth_date">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="exampleFormControlInput6">Giới tính</label>
+                        <input type="text" class="form-control" placeholder="nam/nữ" formControlName="post_gender">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput7">Nơi ở hiện tại</label>
+                        <input type="tel" class="form-control" placeholder="address1" formControlName="post_address">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput8">Quê quán</label>
+                        <input type="tel" class="form-control" placeholder="address2" formControlName="post_current_address">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput12">Số điện thoại</label>
+                        <input type="email" class="form-control" placeholder="0123456">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput12">Chức vụ</label>
+                        <select class="custom-select" formControlName="post_position_id">
+                            <option selected>Choose...</option>
+                            <option *ngFor="let r of jobpositions" value="r.id">{{r.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput11">Chức danh</label>
+                        <select class="custom-select" formControlName="post_job_title_id">
+                            <option selected>Choose...</option>
+                            <option *ngFor="let r of jobtitles" value="r.id">{{r.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput10">Phòng ban</label>
+                        <select class="custom-select" formControlName="post_department_id">
+                            <option selected>Choose...</option>
+                            <option *ngFor="let r of departments" value="r.id">{{r.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput14">Cấp bậc</label>
+                        <select class="custom-select">
+                            <option selected>Choose...</option>
+                            <option value="1">nam</option>
+                            <option value="2">nữ</option>
+                            <option value="3">other</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="exampleFormControlInput9">Mô tả</label>
+                        <br>
+                        <textarea name="describe" cols="80" rows="4" formControlName="post_description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)=" postUserById(1)">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
