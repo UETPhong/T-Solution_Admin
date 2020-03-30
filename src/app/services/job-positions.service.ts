@@ -39,7 +39,7 @@ export class JobPositionsService {
 // PUT /api/position/{id}
 
 putPosition(id, option ){
-  return this.http.put(`${this.apiUrl}/api/position`, option, {
+  return this.http.put(`${this.apiUrl}/api/position/${id}`, option, {
     reportProgress: true,
     observe: 'events',
   })

@@ -38,7 +38,7 @@ export class BannersService {
 // PUT /api/banners/file/{id}
 
 putBanner(id, option ){
-  return this.http.put(`${this.apiUrl}/api/banners`, option, {
+  return this.http.put(`${this.apiUrl}/api/banners/${id}`, option, {
     reportProgress: true,
     observe: 'events',
   })

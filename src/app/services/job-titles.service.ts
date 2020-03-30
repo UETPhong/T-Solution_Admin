@@ -40,7 +40,7 @@ export class JobTitlesService {
 // PUT /api/jobtitle/{id}
 
 putJobTitle(id, option ){
-  return this.http.put(`${this.apiUrl}/api/jobtitle`, option, {
+  return this.http.put(`${this.apiUrl}/api/jobtitle/${id}`, option, {
     reportProgress: true,
     observe: 'events',
   })

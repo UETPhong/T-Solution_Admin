@@ -38,7 +38,7 @@ export class ArticlesService {
 // PUT /api/articles/file/{id}
 
 putArticle(id, option ){
-  return this.http.put(`${this.apiUrl}/api/articles`, option, {
+  return this.http.put(`${this.apiUrl}/api/articles/${id}`, option, {
     reportProgress: true,
     observe: 'events',
   })

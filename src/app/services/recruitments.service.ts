@@ -36,7 +36,7 @@ export class RecruitmentsService {
   // -----------------------PUT------------------------------------
   // PUT /api/recruitments/{id}  
   putRecruitment(id, option) {
-    return this.http.put(`${this.apiUrl}/api/recruitments`, option, {
+    return this.http.put(`${this.apiUrl}/api/recruitments/${id}`, option, {
       reportProgress: true,
       observe: 'events',
     })

@@ -36,7 +36,7 @@ export class RolesService {
 // PUT /api/roles/file/{id}
 
 putRole(id, option ){
-  return this.http.put(`${this.apiUrl}/api/roles`, option, {
+  return this.http.put(`${this.apiUrl}/api/roles/${id}`, option, {
     reportProgress: true,
     observe: 'events',
   })

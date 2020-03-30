@@ -41,7 +41,7 @@
   // -----------------------PUT------------------------------------
   // PUT /api/department/{id}  
   putDepartment(id, option ){
-    return this.http.put(`${this.apiUrl}/api/department`, option, {
+    return this.http.put(`${this.apiUrl}/api/department/${id}`, option, {
       reportProgress: true,
       observe: 'events',
     })
