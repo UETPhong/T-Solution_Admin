@@ -15,63 +15,63 @@ export class JobPositionsService {
 
   constructor(private http: HttpClient) { }
 
-// -----------------------GET------------------------------------
-// -----------------------GET------------------------------------
-// GET /api/position
-// GET /api/position/{id}
-// GET /api/position/export
+  // -----------------------GET------------------------------------
+  // -----------------------GET------------------------------------
+  // GET /api/position
+  // GET /api/position/{id}
+  // GET /api/position/export
 
-  getPositions(){
+  getPositions() {
     return this.http.get(`${this.apiUrl}/api/position`)
   }
-  getPositionById(id){
+  getPositionById(id) {
     return this.http.get(`${this.apiUrl}/api/position/${id}`)
   }
-  getPositionsExport(){
+  getPositionsExport() {
     return this.http.get(`${this.apiUrl}/api/position/export`)
   }
 
-// -----------------------END_GET------------------------------------
-// -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
 
-// -----------------------PUT------------------------------------
-// -----------------------PUT------------------------------------
-// PUT /api/position/{id}
+  // -----------------------PUT------------------------------------
+  // -----------------------PUT------------------------------------
+  // PUT /api/position/{id}
 
-putPosition(id, option ){
-  return this.http.put(`${this.apiUrl}/api/position/${id}`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  putPosition(id, option) {
+    return this.http.put(`${this.apiUrl}/api/position/${id}`, option, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_PUT------------------------------------
-// -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
 
-// -----------------------POT------------------------------------
-// -----------------------POT------------------------------------
-// POST /api/position
-// POST /api/position/import
+  // -----------------------POT------------------------------------
+  // -----------------------POT------------------------------------
+  // POST /api/position
+  // POST /api/position/import
 
-postPosition(id, option ){
-  return this.http.post(`${this.apiUrl}/api/position`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  postPosition(option) {
+    return this.http.post(`${this.apiUrl}/api/position`, option, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_POT------------------------------------
-// -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
 
-// -----------------------DELETE------------------------------------
-// -----------------------DELETE------------------------------------
-// DELETE /api/position/{id}
+  // -----------------------DELETE------------------------------------
+  // -----------------------DELETE------------------------------------
+  // DELETE /api/position/{id}
 
-deletePositionById(id){
-  return this.http.delete(`${this.apiUrl}/api/position/${id}`);
-}
+  deletePositionById(id) {
+    return this.http.delete(`${this.apiUrl}/api/position/${id}`);
+  }
 
-// -----------------------END_DELETE------------------------------------
-// -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
 
 }

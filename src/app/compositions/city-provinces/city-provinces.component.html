@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-light float-left " role="button" aria-disabled="true" disabled>
-                        <i class="fa fa-align-justify"></i> Danh sách nhân sự
+                        <i class="fa fa-align-justify"></i> Danh sách Tỉnh/Thành phố
                     </button>
                     <button type="button" class="btn btn-light float-right" (click)="add.show()">
                         Thêm mới
@@ -57,7 +57,7 @@
             <div class="modal-body">
                 <form [formGroup]="addFrom">
                     <div class="form-group">
-                        <label for="careersName">Ngành nghề</label>
+                        <label for="careersName">Tỉnh/Thành phố</label>
                         <input type="text" class="form-control" formControlName="name">
                     </div>
                     <div class="form-group">
@@ -90,7 +90,7 @@
             <div class="modal-body">
                 <form [formGroup]="editFrom" *ngIf="Selected">
                     <div class="form-group">
-                        <label for="careersName">Ngành nghề</label>
+                        <label for="careersName">Tỉnh/Thành phố</label>
                         <input type="text" class="form-control" formControlName="name" [value]="Selected.name">
                     </div>
                     <div class="form-group">

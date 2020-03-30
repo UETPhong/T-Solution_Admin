@@ -40,8 +40,8 @@
   // -----------------------PUT------------------------------------
   // -----------------------PUT------------------------------------
   // PUT /api/department/{id}  
-  putDepartment(id, option ){
-    return this.http.put(`${this.apiUrl}/api/department/${id}`, option, {
+  putDepartment(id, options ){
+    return this.http.put(`${this.apiUrl}/api/department/${id}`, options, {
       reportProgress: true,
       observe: 'events',
     })
@@ -54,8 +54,8 @@
   // -----------------------POT------------------------------------
   // POST /api/department
   
-  postDepartment(id, option ){
-    return this.http.post(`${this.apiUrl}/api/department`, option, {
+  postDepartment(options){
+    return this.http.post(`${this.apiUrl}/api/department`, options, {
       reportProgress: true,
       observe: 'events',
     })
