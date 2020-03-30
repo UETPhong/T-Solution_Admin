@@ -193,7 +193,7 @@ export class PersonnelsComponent implements OnInit {
   // form post
   postForm: FormGroup;
   postValue: any;
-  get postVal() { return this.postForm.controls };
+  // get postVal() { return this.postForm.controls };
 
   buildFormPost() {
     this.postForm = this.fb.group({
@@ -216,73 +216,73 @@ export class PersonnelsComponent implements OnInit {
   }
   postUserById(id) {
 
-    const options = {};
-    this.postValue = this.postForm.value;
+    // const options = {};
+    // this.postValue = this.postForm.value;
 
-    if (this.postValue.post_username) {
-      options['username'] = this.postValue.post_username;
-    }
+    // if (this.postValue.post_username) {
+    //   options['username'] = this.postValue.post_username;
+    // }
 
-    if (this.postValue.post_code) {
-      options['code'] = this.postValue.post_code;
-    }
+    // if (this.postValue.post_code) {
+    //   options['code'] = this.postValue.post_code;
+    // }
 
-    if (this.postValue.post_role_id) {
-      options['role_id'] = this.postValue.post_role_id;
-    }
+    // if (this.postValue.post_role_id) {
+    //   options['role_id'] = this.postValue.post_role_id;
+    // }
 
-    if (this.postValue.post_active) {
-      options['active'] = this.postValue.post_active;
-    }
+    // if (this.postValue.post_active) {
+    //   options['active'] = this.postValue.post_active;
+    // }
 
-    if (this.postValue.post_full_name) {
-      options['full_name'] = this.postValue.post_full_name;
-    }
+    // if (this.postValue.post_full_name) {
+    //   options['full_name'] = this.postValue.post_full_name;
+    // }
 
-    if (this.postValue.post_email) {
-      options['email'] = this.postValue.post_email;
-    }
+    // if (this.postValue.post_email) {
+    //   options['email'] = this.postValue.post_email;
+    // }
 
-    if (this.postValue.post_birth_date) {
-      options['birth_date'] = this.postValue.post_birth_date;
-    }
+    // if (this.postValue.post_birth_date) {
+    //   options['birth_date'] = this.postValue.post_birth_date;
+    // }
 
-    if (this.postValue.post_gender) {
-      options['gender'] = this.postValue.post_gender;
-    }
+    // if (this.postValue.post_gender) {
+    //   options['gender'] = this.postValue.post_gender;
+    // }
 
-    if (this.postValue.post_address) {
-      options['address'] = this.postValue.post_address;
-    }
+    // if (this.postValue.post_address) {
+    //   options['address'] = this.postValue.post_address;
+    // }
 
-    if (this.postValue.post_current_address) {
-      options['current_address'] = this.postValue.post_current_address;
-    }
+    // if (this.postValue.post_current_address) {
+    //   options['current_address'] = this.postValue.post_current_address;
+    // }
 
-    if (this.postValue.post_position_id) {
-      options['position_id'] = this.postValue.post_position_id;
-    }
+    // if (this.postValue.post_position_id) {
+    //   options['position_id'] = this.postValue.post_position_id;
+    // }
 
-    if (this.postValue.post_jop_title_id) {
-      options['jop_title_id'] = this.postValue.post_jop_title_id;
-    }
+    // if (this.postValue.post_jop_title_id) {
+    //   options['jop_title_id'] = this.postValue.post_jop_title_id;
+    // }
 
-    if (this.postValue.post_department_id) {
-      options['department_id'] = this.postValue.post_department_id;
-    }
+    // if (this.postValue.post_department_id) {
+    //   options['department_id'] = this.postValue.post_department_id;
+    // }
 
-    if (this.postValue.post_description) {
-      options['description'] = this.postValue.post_description;
-    }
+    // if (this.postValue.post_description) {
+    //   options['description'] = this.postValue.post_description;
+    // }
 
-    console.log(options);
+    console.log(this.postForm.value);
 
 
     // if(this.putValue.put_number){
     //   options['']=this.putValue.put_number;
     // }
 
-    this.user.postUser(options).subscribe(r => console.log('post pending'))
+    // this.user.postUser(options).subscribe(r => console.log('post pending'))
   }
   // -------------------------delete--------------------------
 

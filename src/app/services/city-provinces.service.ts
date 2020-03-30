@@ -15,60 +15,60 @@ export class CityProvincesService {
 
   constructor(private http: HttpClient) { }
 
-// -----------------------GET------------------------------------
-// -----------------------GET------------------------------------
-// GET /api/cityProvinces
-// GET /api/cityProvinces/{id}
+  // -----------------------GET------------------------------------
+  // -----------------------GET------------------------------------
+  // GET /api/cityProvinces
+  // GET /api/cityProvinces/{id}
 
 
 
-  getCityProvinces(){
+  getCityProvinces() {
     return this.http.get(`${this.apiUrl}/api/cityProvinces`)
   }
-  getCityProvinceById(id){
+  getCityProvinceById(id) {
     return this.http.get(`${this.apiUrl}/api/cityProvinces/${id}`)
   }
 
-// -----------------------END_GET------------------------------------
-// -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
 
-// -----------------------PUT------------------------------------
-// -----------------------PUT------------------------------------
-// PUT /api/cityProvinces/{id}  
-putCityProvince(id, option ){
-  return this.http.put(`${this.apiUrl}/api/cityProvinces`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  // -----------------------PUT------------------------------------
+  // -----------------------PUT------------------------------------
+  // PUT /api/cityProvinces/{id}  
+  putCityProvince(id, option) {
+    return this.http.put(`${this.apiUrl}/api/cityProvinces/${id}`, option, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_PUT------------------------------------
-// -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
 
-// -----------------------POT------------------------------------
-// -----------------------POT------------------------------------
-// POST /api/cityProvinces
+  // -----------------------POT------------------------------------
+  // -----------------------POT------------------------------------
+  // POST /api/cityProvinces
 
-postCityProvince(id, option ){
-  return this.http.post(`${this.apiUrl}/api/cityProvinces`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  postCityProvince(options) {
+    return this.http.post(`${this.apiUrl}/api/cityProvinces`, options, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_POT------------------------------------
-// -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
 
-// -----------------------DELETE------------------------------------
-// -----------------------DELETE------------------------------------
-// DELETE /api/cityProvinces/{id}
+  // -----------------------DELETE------------------------------------
+  // -----------------------DELETE------------------------------------
+  // DELETE /api/cityProvinces/{id}
 
-deleteCityProvinceId(id){
-  return this.http.delete(`${this.apiUrl}/api/cityProvinces/${id}`);
-}
+  deleteCityProvinceId(id) {
+    return this.http.delete(`${this.apiUrl}/api/cityProvinces/${id}`);
+  }
 
-// -----------------------END_DELETE------------------------------------
-// -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
 
 }
 
