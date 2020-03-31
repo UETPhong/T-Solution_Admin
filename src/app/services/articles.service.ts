@@ -15,64 +15,70 @@ export class ArticlesService {
 
   constructor(private http: HttpClient) { }
 
-// -----------------------GET------------------------------------
-// -----------------------GET------------------------------------
-// GET /api/articles/{id}
-// GET /api/articles
+  // -----------------------GET------------------------------------
+  // -----------------------GET------------------------------------
+  // GET /api/articles/{id}
+  // GET /api/articles
 
 
 
-  getArticles(){
+  getArticles() {
     return this.http.get(`${this.apiUrl}/api/articles`)
   }
-  getArticleById(id){
+  getArticleById(id) {
     return this.http.get(`${this.apiUrl}/api/articles/${id}`)
   }
 
-// -----------------------END_GET------------------------------------
-// -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
 
-// -----------------------PUT------------------------------------
-// -----------------------PUT------------------------------------
-// PUT /api/articles/{id}
-// PUT /api/articles/file/{id}
+  // -----------------------PUT------------------------------------
+  // -----------------------PUT------------------------------------
+  // PUT /api/articles/{id}
+  // PUT /api/articles/file/{id}
 
-putArticle(id, option ){
-  return this.http.put(`${this.apiUrl}/api/articles/${id}`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  putArticle(id, option) {
+    return this.http.put(`${this.apiUrl}/api/articles/${id}`, option, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
+  putFile(id, file) {
+    return this.http.put(`${this.apiUrl}/api/articles/file/${id}`, file, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_PUT------------------------------------
-// -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
 
-// -----------------------POT------------------------------------
-// -----------------------POT------------------------------------
-// POST /api/articles
-// POST /api/articles/{id}
-// POST /api/articles/file/{id}
+  // -----------------------POT------------------------------------
+  // -----------------------POT------------------------------------
+  // POST /api/articles
+  // POST /api/articles/{id}
+  // POST /api/articles/file/{id}
 
-postArticle(id, option ){
-  return this.http.post(`${this.apiUrl}/api/articles`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  postArticle(option) {
+    return this.http.post(`${this.apiUrl}/api/articles`, option)
+  }
+  postFile(id, file) {
+    return this.http.post(`${this.apiUrl}/api/articles/file/${id}`, file)
+  }
 
-// -----------------------END_POT------------------------------------
-// -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
 
-// -----------------------DELETE------------------------------------
-// -----------------------DELETE------------------------------------
-// DELETE /api/articles/{id}
+  // -----------------------DELETE------------------------------------
+  // -----------------------DELETE------------------------------------
+  // DELETE /api/articles/{id}
 
-deleteArticleId(id){
-  return this.http.delete(`${this.apiUrl}/api/articles/${id}`);
-}
+  deleteArticleId(id) {
+    return this.http.delete(`${this.apiUrl}/api/articles/${id}`);
+  }
 
-// -----------------------END_DELETE------------------------------------
-// -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
 }
 
 
