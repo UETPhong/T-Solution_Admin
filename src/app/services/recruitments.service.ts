@@ -49,7 +49,7 @@ export class RecruitmentsService {
   // -----------------------POT------------------------------------
   // POST /api/recruitments
 
-  postRecruitment(id, option) {
+  postRecruitment(option) {
     return this.http.post(`${this.apiUrl}/api/recruitments`, option, {
       reportProgress: true,
       observe: 'events',

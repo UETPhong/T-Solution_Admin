@@ -44,6 +44,7 @@ export class ArticlecsComponent implements OnInit {
       console.log(this.all);
     })
     this.url = null;
+    this.Selected = null;
   }
 
   getById(id) {

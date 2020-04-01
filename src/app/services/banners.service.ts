@@ -15,64 +15,73 @@ export class BannersService {
 
   constructor(private http: HttpClient) { }
 
-// -----------------------GET------------------------------------
-// -----------------------GET------------------------------------
-// GET /api/banners/{id}
-// GET /api/banners
+  // -----------------------GET------------------------------------
+  // -----------------------GET------------------------------------
+  // GET /api/banners/{id}
+  // GET /api/banners
 
 
 
-  getBanners(){
+  getBanners() {
     return this.http.get(`${this.apiUrl}/api/banners`)
   }
-  getBannerById(id){
+  getBannerById(id) {
     return this.http.get(`${this.apiUrl}/api/banners/${id}`)
   }
 
-// -----------------------END_GET------------------------------------
-// -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
+  // -----------------------END_GET------------------------------------
 
-// -----------------------PUT------------------------------------
-// -----------------------PUT------------------------------------
-// PUT /api/banners/{id}
-// PUT /api/banners/file/{id}
+  // -----------------------PUT------------------------------------
+  // -----------------------PUT------------------------------------
+  // PUT /api/banners/{id}
+  // PUT /api/banners/file/{id}
 
-putBanner(id, option ){
-  return this.http.put(`${this.apiUrl}/api/banners/${id}`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  putBanner(id, option) {
+    return this.http.put(`${this.apiUrl}/api/banners/${id}`, option, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
+  putFile(id, file) {
+    return this.http.put(`${this.apiUrl}/api/banners/file/${id}`, file, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_PUT------------------------------------
-// -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
+  // -----------------------END_PUT------------------------------------
 
-// -----------------------POT------------------------------------
-// -----------------------POT------------------------------------
-// POST /api/banners/{id}
-// POST /api/banners
-// POST /api/banners/file/{id}
+  // -----------------------POT------------------------------------
+  // -----------------------POT------------------------------------
+  // POST /api/banners/{id}
+  // POST /api/banners
+  // POST /api/banners/file/{id}
 
-postBanner(id, option ){
-  return this.http.post(`${this.apiUrl}/api/banners`, option, {
-    reportProgress: true,
-    observe: 'events',
-  })
-}
+  postBanner(option) {
+    return this.http.post(`${this.apiUrl}/api/banners`, option)
+  }
+  postFile(id, file) {
+    return this.http.post(`${this.apiUrl}/api/banners/file/${id}`, file, {
+      reportProgress: true,
+      observe: 'events',
+    })
+  }
 
-// -----------------------END_POT------------------------------------
-// -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
+  // -----------------------END_POT------------------------------------
 
-// -----------------------DELETE------------------------------------
-// -----------------------DELETE------------------------------------
-// DELETE /api/banners/{id}
+  // -----------------------DELETE------------------------------------
+  // -----------------------DELETE------------------------------------
+  // DELETE /api/banners/{id}
 
-deleteBannerId(id){
-  return this.http.delete(`${this.apiUrl}/api/banners/${id}`);
-}
+  deleteBannerId(id) {
+    return this.http.delete(`${this.apiUrl}/api/banners/${id}`);
+  }
 
-// -----------------------END_DELETE------------------------------------
-// -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
+  // -----------------------END_DELETE------------------------------------
 
 }
 

@@ -4,9 +4,9 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-light float-left " role="button" aria-disabled="true" disabled>
-                        <i class="fa fa-align-justify"></i> Danh sách nhân sự
+                        <i class="fa fa-align-justify"></i> Danh sách tuyển dụng
                     </button>
-                    <button type="button" class="btn btn-light float-right" (click)="openXl(content1)">
+                    <button type="button" class="btn btn-light float-right" (click)="add.show()">
                         Thêm mới
                     </button>
                 </div>
@@ -15,26 +15,24 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Họ tên</th>
-                                <th scope="col">Phòng ban</th>
-                                <th scope="col">Chức danh</th>
-                                <th scope="col">Chức vụ</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">SĐT</th>
-
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Thành phố</th>
+                                <th scope="col">Mức lương</th>
+                                <th scope="col">Ngày hết hạn</th>
+                                <!-- <th scope="col">Ngày sửa</th> -->
                             </tr>
                         </thead>
-                        <!-- <tbody>
-                            <tr *ngFor="let user of users, let i = index" (dblclick)="openXl(content,user.id)">
+                        <tbody>
+                            <tr *ngFor="let r of all, let i = index" (dblclick)="[edit.show(),getById(r.id)]">
                                 <th scope="row">{{i}}</th>
-                                <td>{{user.full_name}}</td>
-                                <td>{{user.department_name}}</td>
-                                <td>{{user.job_title_name}}</td>
-                                <td>{{user.position_name}}</td>
-                                <td>{{user.email}}</td>
-                                <td>0123456789</td>
+                                <td>{{r.title}}</td>
+                                <td>{{r.quantity}}</td>
+                                <td>{{r.career_id}}</td>
+                                <td>{{r.salary}}</td>
+                                <td>{{r.valid_date}}</td>
                             </tr>
-                        </tbody> -->
+                        </tbody>
                     </table>
                     <ul class="pagination">
                         <li class="page-item"><a class="page-link" href="#">Prev</a></li>
@@ -50,4 +48,174 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+
+<div bsModal #add="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm mới</h4>
+                <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body container ">
+                <form [formGroup]="addFrom" class="row">
+                    <div class="form-group col-12">
+                        <label for="careersName">Tiêu đề(*)</label>
+                        <input type="text" class="form-control" formControlName="title">
+                    </div>
+                    <div class="col-8 row">
+                        <div class="form-group col-4">
+                            <label for="careersName">Yêu cầu kinh nghiệm</label>
+                            <input type="text" class="form-control" formControlName="experience_required">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Trình độ học vấn</label>
+                            <input type="text" class="form-control" formControlName="education">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Vị trí làm việc </label>
+                            <input type="text" class="form-control" formControlName="job_level">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Hình thức làm việc</label>
+                            <input type="text" class="form-control" formControlName="form_of_work">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Loại ngành nghề</label>
+                            <input type="text" class="form-control" formControlName="career_id">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Ngày hết hạn</label>
+                            <input type="text" class="form-control" formControlName="valid_date">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Tỉnh/Thành phố</label>
+                            <input type="text" class="form-control" formControlName="city_province_id">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="careersName">Mức lương</label>
+                            <input type="text" class="form-control" formControlName="salary">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="careersName">Số lượng</label>
+                            <input type="text" class="form-control" formControlName="quantity">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="careersName">Yêu cầu công việc</label>
+                            <textarea cols="40" rows="3" formControlName="work_required"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="careersName">Quyền lợi</label>
+                            <textarea cols="40" rows="3" formControlName="entitlements"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="careersName">Liên hệ</label>
+                            <textarea cols="40" rows="2" formControlName="contact"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="careersName">Nội dung</label>
+                            <textarea cols="118" rows="5" formControlName="description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal -->
+
+<div bsModal #edit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin</h4>
+                <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editFrom" class="row" *ngIf="Selected">
+                    <div class="form-group col-12">
+                        <label for="careersName">Tiêu đề(*)</label>
+                        <input type="text" class="form-control" formControlName="title" [value]="Selected.title">
+                    </div>
+                    <div class="col-8 row">
+                        <div class="form-group col-4">
+                            <label for="careersName">Yêu cầu kinh nghiệm</label>
+                            <input type="text" class="form-control" formControlName="experience_required" [value]="Selected.experience_required">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Trình độ học vấn</label>
+                            <input type="text" class="form-control" formControlName="education" [value]="Selected.education">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Vị trí làm việc </label>
+                            <input type="text" class="form-control" formControlName="job_level" [value]="Selected.job_level">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Hình thức làm việc</label>
+                            <input type="text" class="form-control" formControlName="form_of_work" [value]="Selected.form_of_work">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Loại ngành nghề</label>
+                            <input type="text" class="form-control" formControlName="career_id" [value]="Selected.career_id">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Ngày hết hạn</label>
+                            <input type="text" class="form-control" formControlName="valid_date" [value]="Selected.valid_date">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="careersName">Tỉnh/Thành phố</label>
+                            <input type="text" class="form-control" formControlName="city_province_id" [value]="Selected.city_province_id">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="careersName">Mức lương</label>
+                            <input type="text" class="form-control" formControlName="salary" [value]="Selected.salary">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="careersName">Số lượng</label>
+                            <input type="text" class="form-control" formControlName="quantity" [value]="Selected.quantity">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="careersName">Yêu cầu công việc</label>
+                            <textarea cols="40" rows="3" formControlName="work_required" [value]="Selected.work_required"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="careersName">Quyền lợi</label>
+                            <textarea cols="40" rows="3" formControlName="entitlements" [value]="Selected.entitlements"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="careersName">Liên hệ</label>
+                            <textarea cols="40" rows="2" formControlName="contact" [value]="Selected.contact"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="careersName">Nội dung</label>
+                            <textarea cols="118" rows="5" formControlName="description" [value]="Selected.description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="delete(Selected.id)">Xóa</button>
+                <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
