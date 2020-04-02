@@ -40,6 +40,7 @@ import { ChartsModule } from 'ng2-charts';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
+import { RtHomePageComponent } from './rt-home-page/rt-home-page.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    RtHomePageComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

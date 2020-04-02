@@ -113,6 +113,7 @@ export class CandidatesComponent implements OnInit {
     this.addValue.education = this.addFrom.value.education;
     this.addValue.job_level = this.addFrom.value.job_level;
     this.addValue.time_of_work = this.addFrom.value.time_of_work;
+    this.addValue.age = this.addFrom.value.age;
     this.service.post(this.addValue).subscribe(r => {
       if (this.fileToUpload !== null) {
         const formData: FormData = new FormData();
