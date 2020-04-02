@@ -10,14 +10,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./personnels.component.css']
 })
 export class PersonnelsComponent implements OnInit {
-
-  // x = 100000;
-  // result = (this.x < 1000) ? "nhỏ hơn 1000" :  "lớn hơn hoặc bằng 1000";
-  // test: boolean = true;
-
-
-  users: any;
-  userSelected: any;
+  all: any;
+  Selected: any;
   roles: any;
   jobtitles: any;
   jobpositions: any;
@@ -25,8 +19,7 @@ export class PersonnelsComponent implements OnInit {
 
 
   constructor(
-    private http: HttpClient,
-    private user: UsersService,
+    private service: UsersService,
     private role: RolesService,
     private jobtitle: JobTitlesService,
     private jobposition: JobPositionsService,
@@ -35,259 +28,217 @@ export class PersonnelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUsers();
-    this.getRoles();
-    this.getJobTitles();
-    this.getJobPositions();
-    this.getDepartments();
-    this.buildFormPut();
-    this.buildFormPost();
+    this.buildFromAdd();
+    this.buildFromEdit();
+    this.getAll();
+    this.role.getRoles().subscribe(r => { this.roles = r['data']; console.log('role', this.roles); });
+    this.jobtitle.getJobTitles().subscribe(r => { this.jobtitles = r['data']['apiResult']; console.log('title', this.jobtitles); })
+    this.jobposition.getPositions().subscribe(r => { this.jobpositions = r['data']['apiResult']; console.log('position', this.jobpositions); })
+    this.dep.getDepartments().subscribe(r => { this.departments = r['data']['apiResult']; console.log('dep', this.departments); })
   }
-
+  //handleFile
+  url: any = null;
+  fileToUpload: File = null;
+  handleFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event) => {
+        this.url = event.target.result;
+      }
+      this.fileToUpload = event.target.files.item(0);
+      console.log('file', this.fileToUpload);
+    }
+  }
   // -------------------------get--------------------------
 
-  getUsers() {
-    this.users = [];
-    this.user.getUsers().subscribe(r => {
-      this.users = r['data']['apiResult'];
-      console.log(this.users);
+  getAll() {
+    this.all = [];
+    this.service.getAll().subscribe(r => { this.all = r['data']['apiResult']; console.log(this.all); })
+  }
+
+  getById(id) {
+    this.Selected = [];
+    this.service.getById(id).subscribe(r => { this.Selected = r['data']['0']; console.log(this.Selected); })
+  }
+
+
+  // --------------------delete-------------------
+
+  delete(id) {
+    this.service.delete(id).subscribe(r => {
+      console.log(r);
+      this.getAll();
     })
   }
 
-  getUserById(id) {
-    this.userSelected = [];
-    this.user.getUserById(id).subscribe(r => {
-      this.userSelected = r['data']['0'];
-      console.log(this.userSelected);
+  // --------------------post-------------------
+  //buildForm
+  addFrom: FormGroup;
+  buildFromAdd() {
+    this.addFrom = this.fb.group({
+      code: '',
+      username: '',
+      email: '',
+      full_name: '',
+      gender: '',
+      birth_date: '',
+      address: '',
+      current_address: '',
+      description: '',
+      position_id: '',
+      role_id: '',
+      job_title_id: '',
+      department_id: '',
+      phone: '',
     })
   }
 
-  getRoles() {
-    this.roles = [];
-    this.role.getRoles().subscribe(r => {
-      this.roles = r['data'];
-      console.log('role', this.roles);
+  //obj
+  addValue = {
+    // id: '',
+    code: '',
+    username: '',
+    password: '123456',
+    email: '',
+    active: true,
+    full_name: '',
+    gender: '',
+    birth_date: '',
+    address: '',
+    current_address: '',
+    description: '',
+    position_id: '',
+    role_id: '',
+    job_title_id: '',
+    department_id: '',
+    phone: '',
+  }
+
+  //add
+  addNew() {
+    this.addValue.code = this.addFrom.value.code;
+    this.addValue.username = this.addFrom.value.username;
+    this.addValue.email = this.addFrom.value.email;
+    this.addValue.full_name = this.addFrom.value.full_name;
+    this.addValue.gender = this.addFrom.value.gender;
+    this.addValue.birth_date = this.addFrom.value.birth_date;
+    this.addValue.address = this.addFrom.value.address;
+    this.addValue.current_address = this.addFrom.value.current_address;
+    this.addValue.description = this.addFrom.value.description;
+    this.addValue.position_id = this.addFrom.value.position_id;
+    this.addValue.role_id = this.addFrom.value.role_id;
+    this.addValue.job_title_id = this.addFrom.value.job_title_id;
+    this.addValue.department_id = this.addFrom.value.department_id;
+    this.addValue.phone = this.addFrom.value.phone;
+    console.log('value',this.addValue);
+    console.log(this.addFrom.value);
+
+    this.service.post(this.addValue).subscribe(r => {
+      console.log('post', r);
+      // if (this.fileToUpload !== null) {
+      //   const formData: FormData = new FormData();
+      //   formData.append('key', this.fileToUpload, this.fileToUpload.name)
+      //   this.service.postFileById(r['data']['id'], formData).subscribe(r => {
+      //   })
+      // }
+      this.getAll();
     })
   }
 
-  getJobTitles() {
-    this.jobtitles = [];
-    this.jobtitle.getJobTitles().subscribe(r => {
-      this.jobtitles = r['data']['apiResult'];
-      console.log('title', this.jobtitles);
+  // --------------------put-------------------
+  //buildForm
+  editFrom: FormGroup;
+  buildFromEdit() {
+    this.editFrom = this.fb.group({
+      code: '',
+      username: '',
+      email: '',
+      full_name: '',
+      gender: '',
+      birth_date: '',
+      address: '',
+      current_address: '',
+      description: '',
+      position_id: '',
+      role_id: '',
+      job_title_id: '',
+      department_id: '',
+      phone: '',
     })
   }
+  //obj
+  editValue = {
+    id: '',
+    code: '',
+    username: '',
+    salt: '',
+    password: '',
+    email: '',
+    full_name: '',
+    gender: '',
+    birth_date: '',
+    address: '',
+    current_address: '',
+    description: '',
+    position_id: '',
+    role_id: '',
+    job_title_id: '',
+    department_id: '',
+    manager: '',
+    login_count: '',
+    active: true,
+    created_by: '',
+    created_date: '',
+    updated_by: '',
+    updated_date: '',
+    phone:'',
+  }
+  //edit
+  editSelected() {
+    this.editValue.id = this.Selected.id;
+    this.editValue.code = this.Selected.code;
+    this.editValue.username = this.Selected.username;
+    this.editValue.email = this.Selected.email;
+    this.editValue.full_name = this.Selected.full_name;
+    this.editValue.gender = this.Selected.gender;
+    this.editValue.birth_date = this.Selected.birth_date;
+    this.editValue.address = this.Selected.address;
+    this.editValue.current_address = this.Selected.current_address;
+    this.editValue.description = this.Selected.description;
+    this.editValue.position_id = this.Selected.position_id;
+    this.editValue.role_id = this.Selected.role_id;
+    this.editValue.job_title_id = this.Selected.job_title_id;
+    this.editValue.department_id = this.Selected.department_id;
+    this.editValue.phone = this.Selected.phone;
+    if (this.editFrom.value.code) { this.editValue.code = this.editFrom.value.code; }
+    if (this.editFrom.value.username) { this.editValue.username = this.editFrom.value.username; }
+    if (this.editFrom.value.email) { this.editValue.email = this.editFrom.value.email; }
+    if (this.editFrom.value.full_name) { this.editValue.full_name = this.editFrom.value.full_name; }
+    if (this.editFrom.value.gender) { this.editValue.gender = this.editFrom.value.gender; }
+    if (this.editFrom.value.birth_date) { this.editValue.birth_date = this.editFrom.value.birth_date; }
+    if (this.editFrom.value.address) { this.editValue.address = this.editFrom.value.address; }
+    if (this.editFrom.value.current_address) { this.editValue.current_address = this.editFrom.value.current_address; }
+    if (this.editFrom.value.description) { this.editValue.description = this.editFrom.value.description; }
+    if (this.editFrom.value.position_id) { this.editValue.position_id = this.editFrom.value.position_id; }
+    if (this.editFrom.value.role_id) { this.editValue.role_id = this.editFrom.value.role_id; }
+    if (this.editFrom.value.job_title_id) { this.editValue.job_title_id = this.editFrom.value.job_title_id; }
+    if (this.editFrom.value.department_id) { this.editValue.department_id = this.editFrom.value.department_id; }
+    if (this.editFrom.value.phone) { this.editValue.phone = this.editFrom.value.phone; }
+    console.log('value', this.editValue);
 
-  getJobPositions() {
-    this.jobpositions = [];
-    this.jobposition.getPositions().subscribe(r => {
-      this.jobpositions = r['data']['apiResult'];
-      console.log('position', this.jobpositions);
+    this.service.putById(this.Selected.id, this.editValue).subscribe(r => {
+      console.log(r);
+      // if (this.fileToUpload !== null) {
+      //   const formData: FormData = new FormData();
+      //   formData.append('key', this.fileToUpload, this.fileToUpload.name)
+      //   this.service.posrUserFileById(this.Selected.id, formData).subscribe(r => {
+      //     console.log('SUCCESS', r);
+
+      //   })
+      // }
+      this.getAll();
     })
   }
-
-  getDepartments() {
-    this.departments = [];
-    this.dep.getDepartments().subscribe(r => {
-      this.departments = r['data']['apiResult'];
-      console.log('dep', this.departments);
-    })
-  }
-  // -------------------------put--------------------------
-  // form put
-  putForm: FormGroup;
-  putValue: any;
-  get putVal() { return this.putForm.controls };
-
-  buildFormPut() {
-    this.putForm = this.fb.group({
-      // username:'',
-      put_code: '',
-      put_role_id: '',
-      put_active: '',
-      put_full_name: '',
-      put_email: '',
-      put_birth_date: '',
-      put_gender: '',
-      put_address: '',
-      put_current_address: '',
-      // put_number:'',
-      put_position_id: '',
-      put_job_title_id: '',
-      put_department_id: '',
-      put_description: '',
-    })
-  }
-
-  putUserById(id) {
-
-    const options = {};
-    this.putValue = this.putForm.value;
-
-    if (this.putValue.put_code) {
-      options['code'] = this.putValue.put_code;
-    }
-
-    if (this.putValue.put_role_id) {
-      options['role_id'] = this.putValue.put_role_id;
-    }
-
-    if (this.putValue.put_active) {
-      options['active'] = this.putValue.put_active;
-    }
-
-    if (this.putValue.put_full_name) {
-      options['full_name'] = this.putValue.put_full_name;
-    }
-
-    if (this.putValue.put_email) {
-      options['email'] = this.putValue.put_email;
-    }
-
-    if (this.putValue.put_birth_date) {
-      options['birth_date'] = this.putValue.put_birth_date;
-    }
-
-    if (this.putValue.put_gender) {
-      options['gender'] = this.putValue.put_gender;
-    }
-
-    if (this.putValue.put_address) {
-      options['address'] = this.putValue.put_address;
-    }
-
-    if (this.putValue.put_current_address) {
-      options['current_address'] = this.putValue.put_current_address;
-    }
-
-    if (this.putValue.put_position_id) {
-      options['position_id'] = this.putValue.put_position_id;
-    }
-
-    if (this.putValue.put_jop_title_id) {
-      options['jop_title_id'] = this.putValue.put_jop_title_id;
-    }
-
-    if (this.putValue.put_department_id) {
-      options['department_id'] = this.putValue.put_department_id;
-    }
-
-    if (this.putValue.put_description) {
-      options['description'] = this.putValue.put_description;
-    }
-    console.log(id);
-    console.log(options);
-
-    this.http.put(`http://localhost:1234/api/users/${id}`, options).subscribe(r => console.log('hello'))
-
-
-
-    // if(this.putValue.put_number){
-    //   options['']=this.putValue.put_number;
-    // }
-
-    // this.user.putUserById(id, options)
-  }
-
-  // -------------------------post--------------------------
-  // form post
-  postForm: FormGroup;
-  postValue: any;
-  // get postVal() { return this.postForm.controls };
-
-  buildFormPost() {
-    this.postForm = this.fb.group({
-      post_username: '',
-      post_code: '',
-      post_role_id: '',
-      post_active: '',
-      post_full_name: '',
-      post_email: '',
-      post_birth_date: '',
-      post_gender: '',
-      post_address: '',
-      post_current_address: '',
-      // post_number:'',
-      post_position_id: '',
-      post_job_title_id: '',
-      post_department_id: '',
-      post_description: '',
-    })
-  }
-  postUserById(id) {
-
-    // const options = {};
-    // this.postValue = this.postForm.value;
-
-    // if (this.postValue.post_username) {
-    //   options['username'] = this.postValue.post_username;
-    // }
-
-    // if (this.postValue.post_code) {
-    //   options['code'] = this.postValue.post_code;
-    // }
-
-    // if (this.postValue.post_role_id) {
-    //   options['role_id'] = this.postValue.post_role_id;
-    // }
-
-    // if (this.postValue.post_active) {
-    //   options['active'] = this.postValue.post_active;
-    // }
-
-    // if (this.postValue.post_full_name) {
-    //   options['full_name'] = this.postValue.post_full_name;
-    // }
-
-    // if (this.postValue.post_email) {
-    //   options['email'] = this.postValue.post_email;
-    // }
-
-    // if (this.postValue.post_birth_date) {
-    //   options['birth_date'] = this.postValue.post_birth_date;
-    // }
-
-    // if (this.postValue.post_gender) {
-    //   options['gender'] = this.postValue.post_gender;
-    // }
-
-    // if (this.postValue.post_address) {
-    //   options['address'] = this.postValue.post_address;
-    // }
-
-    // if (this.postValue.post_current_address) {
-    //   options['current_address'] = this.postValue.post_current_address;
-    // }
-
-    // if (this.postValue.post_position_id) {
-    //   options['position_id'] = this.postValue.post_position_id;
-    // }
-
-    // if (this.postValue.post_jop_title_id) {
-    //   options['jop_title_id'] = this.postValue.post_jop_title_id;
-    // }
-
-    // if (this.postValue.post_department_id) {
-    //   options['department_id'] = this.postValue.post_department_id;
-    // }
-
-    // if (this.postValue.post_description) {
-    //   options['description'] = this.postValue.post_description;
-    // }
-
-    console.log(this.postForm.value);
-
-
-    // if(this.putValue.put_number){
-    //   options['']=this.putValue.put_number;
-    // }
-
-    // this.user.postUser(options).subscribe(r => console.log('post pending'))
-  }
-  // -------------------------delete--------------------------
-
-  deleteUserById(id) {
-    this.user.deleteUserById(id);
-  }
-
 }
+

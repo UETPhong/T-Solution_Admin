@@ -52,6 +52,7 @@ export class DepartmentsComponent implements OnInit {
   buildFromAdd() {
     this.addFrom = this.fb.group({
       name: '',
+      parent_id: '',
       active: true,
     })
   }
@@ -59,6 +60,7 @@ export class DepartmentsComponent implements OnInit {
   addValue = {
     // id: '',
     name: '',
+    parent_id: '',
     active: '',
     created_by: '',
     created_date: '',
@@ -69,7 +71,9 @@ export class DepartmentsComponent implements OnInit {
   //add
   addNew() {
     this.addValue.name = this.addFrom.value.name;
+    this.addValue.parent_id = this.addFrom.value.parent_id;
     this.addValue.active = this.addFrom.value.active;
+    console.log(this.addValue);
     this.service.postDepartment(this.addValue).subscribe(r => {
       console.log(r);
       this.getAll();
@@ -77,34 +81,40 @@ export class DepartmentsComponent implements OnInit {
   }
 
   // --------------------put-------------------
-    //buildForm
-    editFrom: FormGroup;
-    buildFromEdit() {
-      this.editFrom = this.fb.group({
-        name: '',
-        active: true,
-      })
-    }
-    //obj
-    editValue = {
-      id: '',
+  //buildForm
+  editFrom: FormGroup;
+  buildFromEdit() {
+    this.editFrom = this.fb.group({
       name: '',
-      active: '',
-      created_by: '',
-      created_date: '',
-      updated_by: '',
-      updated_date: '',
-    }
-  
-    //add
-    editSelected() {
-      this.editValue.id = this.Selected.id;
-      this.editValue.name = this.editFrom.value.name;
-      this.editValue.active = this.editFrom.value.active;
-      console.log(this.editValue);
-      this.service.putDepartment(this.Selected.id,this.editValue).subscribe(r => {
-        console.log(r);
-        this.getAll();
-      })
-    }
+      parent_id: '',
+      active: true,
+    })
+  }
+  //obj
+  editValue = {
+    id: '',
+    name: '',
+    active: true,
+    parent_id: '',
+    created_by: '',
+    created_date: '',
+    updated_by: '',
+    updated_date: '',
+  }
+
+  //add
+  editSelected() {
+    this.editValue.id = this.Selected.id;
+    this.editValue.name = this.Selected.name;
+    this.editValue.parent_id = this.Selected.parent_id;
+    this.editValue.active = this.Selected.active;
+    if (this.editFrom.value.name) { this.editValue.name = this.editFrom.value.name; }
+    if (this.editFrom.value.parent_id) { this.editValue.parent_id = this.editFrom.value.parent_id; }
+    if (this.editFrom.value.active) { this.editValue.active = this.editFrom.value.active; }
+    console.log(this.editValue);
+    this.service.putDepartment(this.Selected.id, this.editValue).subscribe(r => {
+      console.log(r);
+      this.getAll();
+    })
+  }
 }
