@@ -21,13 +21,13 @@ export class JobPositionsService {
   // GET /api/position/{id}
   // GET /api/position/export
 
-  getPositions() {
+  getAll() {
     return this.http.get(`${this.apiUrl}/api/position`)
   }
-  getPositionById(id) {
+  getById(id) {
     return this.http.get(`${this.apiUrl}/api/position/${id}`)
   }
-  getPositionsExport() {
+  getExport() {
     return this.http.get(`${this.apiUrl}/api/position/export`)
   }
 
@@ -38,7 +38,7 @@ export class JobPositionsService {
   // -----------------------PUT------------------------------------
   // PUT /api/position/{id}
 
-  putPosition(id, option) {
+  put(id, option) {
     return this.http.put(`${this.apiUrl}/api/position/${id}`, option, {
       reportProgress: true,
       observe: 'events',
@@ -53,7 +53,7 @@ export class JobPositionsService {
   // POST /api/position
   // POST /api/position/import
 
-  postPosition(option) {
+  post(option) {
     return this.http.post(`${this.apiUrl}/api/position`, option, {
       reportProgress: true,
       observe: 'events',
@@ -67,7 +67,7 @@ export class JobPositionsService {
   // -----------------------DELETE------------------------------------
   // DELETE /api/position/{id}
 
-  deletePositionById(id) {
+  delete(id) {
     return this.http.delete(`${this.apiUrl}/api/position/${id}`);
   }
 

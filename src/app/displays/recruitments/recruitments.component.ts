@@ -1,24 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { RecruitmentsService } from '../../services';
+import { RecruitmentsService, CityProvincesService, JobPositionsService, JobTitlesService, CareersService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-recruitments',
   templateUrl: './recruitments.component.html',
   styleUrls: ['./recruitments.component.css']
 })
+
 export class RecruitmentsComponent implements OnInit {
 
   constructor(
     private service: RecruitmentsService,
+    private career: CareersService,
+    private jobtitle: JobTitlesService,
+    private jobposition: JobPositionsService,
+    private city: CityProvincesService,
     private fb: FormBuilder,
+    private datePipe: DatePipe,
   ) { }
+
+  jobtitles: any;
+  jobpositions: any;
+  city_province: any;
+  careers: any;
+  now: string = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   ngOnInit(): void {
     this.buildFromAdd();
     this.buildFromEdit();
+    this.jobtitle.getAll().subscribe(r => { this.jobtitles = r['data']['apiResult']; console.log('title', this.jobtitles); })
+    this.career.getAll().subscribe(r => { this.careers = r['data']['apiResult']; console.log('title', this.careers); })
+    this.jobposition.getAll().subscribe(r => { this.jobpositions = r['data']['apiResult']; console.log('position', this.jobpositions); })
+    this.city.getAll().subscribe(r => { this.city_province = r['data']['apiResult']; console.log('dep', this.city_province); })
     this.getAll();
   }
+
   //handleFile
   url: any = null;
   fileToUpload: File = null;
@@ -39,7 +57,7 @@ export class RecruitmentsComponent implements OnInit {
 
   getAll() {
     this.all = [];
-    this.service.getRecruitments().subscribe(r => {
+    this.service.getAll().subscribe(r => {
       this.all = r['data']['apiResult'];
       console.log(this.all);
     })
@@ -49,15 +67,16 @@ export class RecruitmentsComponent implements OnInit {
 
   getById(id) {
     this.Selected = [];
-    this.service.getRecruitmentById(id).subscribe(r => {
+    this.service.getById(id).subscribe(r => {
       this.Selected = r['data'];
-      console.log('selected',this.Selected);
+      this.Selected.valid_date = this.datePipe.transform(this.Selected.valid_date, 'yyyy-MM-dd');
+      console.log('selected', this.Selected.valid_date);
     })
   }
 
   // --------------------delete-------------------
   delete(id) {
-    this.service.deleteRecruitmentId(id).subscribe(r => {
+    this.service.delete(id).subscribe(r => {
       console.log(r);
       this.getAll();
     })
@@ -104,10 +123,6 @@ export class RecruitmentsComponent implements OnInit {
     career_id: '',
     city_province_id: '',
     active: true,
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
   }
 
   //add
@@ -126,9 +141,9 @@ export class RecruitmentsComponent implements OnInit {
     this.addValue.valid_date = this.addFrom.value.valid_date;                   // Ngày hết hạn
     this.addValue.career_id = this.addFrom.value.career_id;                     // Ngày hết hạn
     this.addValue.city_province_id = this.addFrom.value.city_province_id;       //Thành phố
-    console.log(this.addValue);
+    console.log('addvalue', this.addValue);
 
-    this.service.postRecruitment(this.addValue).subscribe(r => {
+    this.service.post(this.addValue).subscribe(r => {
       this.getAll();
     })
   }
@@ -138,20 +153,20 @@ export class RecruitmentsComponent implements OnInit {
   editFrom: FormGroup;
   buildFromEdit() {
     this.editFrom = this.fb.group({
-      title: null,
-      description: null,
-      work_required: null,
-      entitlements: null,
-      experience_required: null,
-      education: null,
-      job_level: null,
-      form_of_work: null,
-      contact: null,
-      salary: null,
-      quantity: null,
-      valid_date: null,
-      career_id: null,
-      city_province_id: null,
+      title: '',
+      description: '',
+      work_required: '',
+      entitlements: '',
+      experience_required: '',
+      education: '',
+      job_level: '',
+      form_of_work: '',
+      contact: '',
+      salary: '',
+      quantity: '',
+      valid_date: '',
+      career_id: '',
+      city_province_id: '',
     })
   }
   //obj
@@ -172,10 +187,6 @@ export class RecruitmentsComponent implements OnInit {
     career_id: '',
     city_province_id: '',
     active: true,
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
   }
   //edit
   editSelected() {
@@ -212,8 +223,8 @@ export class RecruitmentsComponent implements OnInit {
     console.log('form', this.editFrom);
 
 
-    this.service.putRecruitment(this.Selected.id, this.editValue).subscribe(r => {
-      console.log(r);      
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
+      console.log(r);
       this.getAll();
     })
   }

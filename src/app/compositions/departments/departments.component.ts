@@ -25,7 +25,7 @@ export class DepartmentsComponent implements OnInit {
 
   getAll() {
     this.all = [];
-    this.service.getDepartments().subscribe(r => {
+    this.service.getAll().subscribe(r => {
       this.all = r['data']['apiResult'];
       console.log(this.all);
     })
@@ -33,7 +33,7 @@ export class DepartmentsComponent implements OnInit {
 
   getById(id) {
     this.Selected = [];
-    this.service.getDepartmentById(id).subscribe(r => {
+    this.service.getById(id).subscribe(r => {
       this.Selected = r['data'];
       console.log(this.Selected);
     })
@@ -41,7 +41,7 @@ export class DepartmentsComponent implements OnInit {
 
   // --------------------delete-------------------
   delete(id) {
-    this.service.deleteDepartmentId(id).subscribe(r => {
+    this.service.delete(id).subscribe(r => {
       console.log(r);
       this.getAll();
     })
@@ -53,28 +53,21 @@ export class DepartmentsComponent implements OnInit {
     this.addFrom = this.fb.group({
       name: '',
       parent_id: '',
-      active: true,
     })
   }
   //obj
   addValue = {
-    // id: '',
     name: '',
     parent_id: '',
-    active: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
+    active: true,
   }
 
   //add
   addNew() {
     this.addValue.name = this.addFrom.value.name;
     this.addValue.parent_id = this.addFrom.value.parent_id;
-    this.addValue.active = this.addFrom.value.active;
     console.log(this.addValue);
-    this.service.postDepartment(this.addValue).subscribe(r => {
+    this.service.post(this.addValue).subscribe(r => {
       console.log(r);
       this.getAll();
     })
@@ -87,19 +80,14 @@ export class DepartmentsComponent implements OnInit {
     this.editFrom = this.fb.group({
       name: '',
       parent_id: '',
-      active: true,
     })
   }
   //obj
   editValue = {
     id: '',
     name: '',
-    active: true,
     parent_id: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
+    active: true,
   }
 
   //add
@@ -112,9 +100,10 @@ export class DepartmentsComponent implements OnInit {
     if (this.editFrom.value.parent_id) { this.editValue.parent_id = this.editFrom.value.parent_id; }
     if (this.editFrom.value.active) { this.editValue.active = this.editFrom.value.active; }
     console.log(this.editValue);
-    this.service.putDepartment(this.Selected.id, this.editValue).subscribe(r => {
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
       this.getAll();
+      this.Selected = [];
     })
   }
 }

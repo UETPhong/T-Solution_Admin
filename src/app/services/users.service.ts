@@ -28,11 +28,11 @@ export class UsersService {
 
   // getExcelUsers() { };
 
-  getFiles() {
+  getAllFiles() {
     return this.http.get(`${this.apiUrl}/api/user_files`)
   };
 
-  getFilesById(id) {
+  getFile(id) {
     return this.http.get(`${this.apiUrl}/api/user_files/${id}`)
   };
 
@@ -40,18 +40,18 @@ export class UsersService {
 
   // ----------------------  PUT  ----------------------
 
-  putById(id, options) {
+  put(id, options) {
     return this.http.put(`${this.apiUrl}/api/users/${id}`, options, {
       reportProgress: true,
       observe: 'events',
     })
   }
-  // putUserById(id, options) {
-  //   return this.http.put(`${this.apiUrl}/api/users/${id}`, options, {
-  //     reportProgress: true,
-  //     observe: 'events',
-  //   })
-  // }
+  putFile(id, formData) {
+    return this.http.post(`${this.apiUrl}/api/user_files/${id}`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
 
   // ----------------------  END PUT  ----------------------
 
@@ -61,7 +61,7 @@ export class UsersService {
     return this.http.post(`${this.apiUrl}/api/users`, options);
   };
 
-  postFileById(id, formData) {
+  postFile(id, formData) {
     return this.http.post(`${this.apiUrl}/api/user_files/${id}`, formData, {
       reportProgress: true,
       observe: 'events'
@@ -76,7 +76,7 @@ export class UsersService {
     return this.http.delete(`${this.apiUrl}/api/users/${id}`);
   }
 
-  deleteFileBy(id){
+  deleteFile(id){
     return this.http.delete(`${this.apiUrl}/api/user_files/${id}`);
   }
 }

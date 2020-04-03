@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UsersService, RolesService, JobTitlesService, JobPositionsService, DepartmentsService } from '../../services';
+import { UsersService, RolesService, JobTitlesService, JobPositionsService, DepartmentsService, CityProvincesService } from '../../services';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class PersonnelsComponent implements OnInit {
   jobtitles: any;
   jobpositions: any;
   departments: any;
-
+  city_province: any;
+  now: string = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   constructor(
     private service: UsersService,
@@ -24,19 +26,22 @@ export class PersonnelsComponent implements OnInit {
     private jobtitle: JobTitlesService,
     private jobposition: JobPositionsService,
     private dep: DepartmentsService,
+    private city: CityProvincesService,
     private fb: FormBuilder,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
     this.buildFromAdd();
     this.buildFromEdit();
     this.getAll();
-    this.role.getRoles().subscribe(r => { this.roles = r['data']; console.log('role', this.roles); });
-    this.jobtitle.getJobTitles().subscribe(r => { this.jobtitles = r['data']['apiResult']; console.log('title', this.jobtitles); })
-    this.jobposition.getPositions().subscribe(r => { this.jobpositions = r['data']['apiResult']; console.log('position', this.jobpositions); })
-    this.dep.getDepartments().subscribe(r => { this.departments = r['data']['apiResult']; console.log('dep', this.departments); })
+    this.role.getAll().subscribe(r => { this.roles = r['data']; console.log('role', this.roles); });
+    this.jobtitle.getAll().subscribe(r => { this.jobtitles = r['data']['apiResult']; console.log('title', this.jobtitles); })
+    this.jobposition.getAll().subscribe(r => { this.jobpositions = r['data']['apiResult']; console.log('position', this.jobpositions); })
+    this.dep.getAll().subscribe(r => { this.departments = r['data']['apiResult']; console.log('dep', this.departments); })
+    this.city.getAll().subscribe(r => { this.city_province = r['data']['apiResult']; console.log('dep', this.city_province); })
   }
-  //handleFile
+  //handleFile  
   url: any = null;
   fileToUpload: File = null;
   handleFile(event) {
@@ -59,7 +64,11 @@ export class PersonnelsComponent implements OnInit {
 
   getById(id) {
     this.Selected = [];
-    this.service.getById(id).subscribe(r => { this.Selected = r['data']['0']; console.log(this.Selected); })
+    this.service.getById(id).subscribe(r => {
+      this.Selected = r['data']['0'];
+      this.Selected.birth_date = this.datePipe.transform(this.Selected.birth_date, 'yyyy-MM-dd');
+      console.log(this.Selected);
+    })
   }
 
 
@@ -131,7 +140,7 @@ export class PersonnelsComponent implements OnInit {
     this.addValue.job_title_id = this.addFrom.value.job_title_id;
     this.addValue.department_id = this.addFrom.value.department_id;
     this.addValue.phone = this.addFrom.value.phone;
-    console.log('value',this.addValue);
+    console.log('value', this.addValue);
     console.log(this.addFrom.value);
 
     this.service.post(this.addValue).subscribe(r => {
@@ -139,7 +148,7 @@ export class PersonnelsComponent implements OnInit {
       // if (this.fileToUpload !== null) {
       //   const formData: FormData = new FormData();
       //   formData.append('key', this.fileToUpload, this.fileToUpload.name)
-      //   this.service.postFileById(r['data']['id'], formData).subscribe(r => {
+      //   this.service.postFile(r['data']['id'], formData).subscribe(r => {
       //   })
       // }
       this.getAll();
@@ -173,7 +182,6 @@ export class PersonnelsComponent implements OnInit {
     code: '',
     username: '',
     salt: '',
-    password: '',
     email: '',
     full_name: '',
     gender: '',
@@ -192,7 +200,7 @@ export class PersonnelsComponent implements OnInit {
     created_date: '',
     updated_by: '',
     updated_date: '',
-    phone:'',
+    phone: '',
   }
   //edit
   editSelected() {
@@ -227,17 +235,17 @@ export class PersonnelsComponent implements OnInit {
     if (this.editFrom.value.phone) { this.editValue.phone = this.editFrom.value.phone; }
     console.log('value', this.editValue);
 
-    this.service.putById(this.Selected.id, this.editValue).subscribe(r => {
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
       // if (this.fileToUpload !== null) {
       //   const formData: FormData = new FormData();
       //   formData.append('key', this.fileToUpload, this.fileToUpload.name)
-      //   this.service.posrUserFileById(this.Selected.id, formData).subscribe(r => {
+      //   this.service.putFile(this.Selected.id, formData).subscribe(r => {
       //     console.log('SUCCESS', r);
-
       //   })
       // }
       this.getAll();
+      this.Selected = [];
     })
   }
 }

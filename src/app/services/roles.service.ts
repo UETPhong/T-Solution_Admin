@@ -20,10 +20,10 @@ export class RolesService {
 
 
 
-  getRoles(){
+  getAll(){
     return this.http.get(`${this.apiUrl}/api/roles`)
   }
-  getRoleById(id){
+  getById(id){
     return this.http.get(`${this.apiUrl}/api/roles/${id}`)
   }
 
@@ -35,7 +35,7 @@ export class RolesService {
 // PUT /api/roles/{id}
 // PUT /api/roles/file/{id}
 
-putRole(id, option ){
+put(id, option ){
   return this.http.put(`${this.apiUrl}/api/roles/${id}`, option, {
     reportProgress: true,
     observe: 'events',
@@ -51,7 +51,7 @@ putRole(id, option ){
 // POST /api/roles/{id}
 // POST /api/roles/file/{id}
 
-postRole(id, option ){
+post(id, option ){
   return this.http.post(`${this.apiUrl}/api/roles`, option, {
     reportProgress: true,
     observe: 'events',
@@ -65,7 +65,7 @@ postRole(id, option ){
 // -----------------------DELETE------------------------------------
 // DELETE /api/roles/{id}
 
-deleteRoleId(id){
+delete(id){
   return this.http.delete(`${this.apiUrl}/api/roles/${id}`);
 }
 

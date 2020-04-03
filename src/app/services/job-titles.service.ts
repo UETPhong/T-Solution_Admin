@@ -22,13 +22,13 @@ export class JobTitlesService {
   // GET /api/jobtitle/{id}
   // GET /api/jobtitle/export
 
-  getJobTitles() {
+  getAll() {
     return this.http.get(`${this.apiUrl}/api/jobtitle`)
   }
-  getJobTitleById(id) {
+  getById(id) {
     return this.http.get(`${this.apiUrl}/api/jobtitle/${id}`)
   }
-  getJobTitlesExport() {
+  getExport() {
     return this.http.get(`${this.apiUrl}/api/jobtitle/export`)
   }
 
@@ -39,7 +39,7 @@ export class JobTitlesService {
   // -----------------------PUT------------------------------------
   // PUT /api/jobtitle/{id}
 
-  putJobTitle(id, option) {
+  put(id, option) {
     return this.http.put(`${this.apiUrl}/api/jobtitle/${id}`, option, {
       reportProgress: true,
       observe: 'events',
@@ -54,7 +54,7 @@ export class JobTitlesService {
   // POST /api/jobtitle
   // POST /api/jobtitle/import
 
-  postJobTitle(option) {
+  post(option) {
     return this.http.post(`${this.apiUrl}/api/jobtitle`, option, {
       reportProgress: true,
       observe: 'events',
@@ -68,7 +68,7 @@ export class JobTitlesService {
   // -----------------------DELETE------------------------------------
   // DELETE /api/jobtitle/{id}
 
-  deleteJobTitleById(id) {
+  delete(id) {
     return this.http.delete(`${this.apiUrl}/api/jobtitle/${id}`);
   }
 

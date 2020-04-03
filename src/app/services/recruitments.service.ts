@@ -22,10 +22,10 @@ export class RecruitmentsService {
 
 
 
-  getRecruitments() {
+  getAll() {
     return this.http.get(`${this.apiUrl}/api/recruitments`)
   }
-  getRecruitmentById(id) {
+  getById(id) {
     return this.http.get(`${this.apiUrl}/api/recruitments/${id}`)
   }
 
@@ -35,7 +35,7 @@ export class RecruitmentsService {
   // -----------------------PUT------------------------------------
   // -----------------------PUT------------------------------------
   // PUT /api/recruitments/{id}  
-  putRecruitment(id, option) {
+  put(id, option) {
     return this.http.put(`${this.apiUrl}/api/recruitments/${id}`, option, {
       reportProgress: true,
       observe: 'events',
@@ -49,7 +49,7 @@ export class RecruitmentsService {
   // -----------------------POT------------------------------------
   // POST /api/recruitments
 
-  postRecruitment(option) {
+  post(option) {
     return this.http.post(`${this.apiUrl}/api/recruitments`, option, {
       reportProgress: true,
       observe: 'events',
@@ -63,7 +63,7 @@ export class RecruitmentsService {
   // -----------------------DELETE------------------------------------
   // DELETE /api/recruitments/{id}
 
-  deleteRecruitmentId(id) {
+  delete(id) {
     return this.http.delete(`${this.apiUrl}/api/recruitments/${id}`);
   }
 

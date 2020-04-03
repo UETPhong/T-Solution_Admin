@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
+
 
 import { DisplaysRoutingModule } from './displays-routing.module';
 import { BannersComponent } from './banners/banners.component';
@@ -16,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     DisplaysRoutingModule,
     ReactiveFormsModule,
     ModalModule.forRoot()
-  ]
+  ],
+  providers:[DatePipe],
 })
 export class DisplaysModule { }

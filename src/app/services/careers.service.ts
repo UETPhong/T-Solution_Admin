@@ -23,10 +23,10 @@ export class CareersService {
 
 
 
-  getCareers() {
+  getAll() {
     return this.http.get(`${this.apiUrl}/api/careers`)
   }
-  getCareerById(id) {
+  getById(id) {
     return this.http.get(`${this.apiUrl}/api/careers/${id}`)
   }
 
@@ -36,7 +36,7 @@ export class CareersService {
   // -----------------------PUT------------------------------------
   // -----------------------PUT------------------------------------
   // PUT /api/careers/{id}  
-  putCareer(id, option) {
+  put(id, option) {
     return this.http.put(`${this.apiUrl}/api/careers/${id}`, option, {
       reportProgress: true,
       observe: 'events',
@@ -50,7 +50,7 @@ export class CareersService {
   // -----------------------POT------------------------------------
   // POST /api/careers
 
-  postCareer(options) {
+  post(options) {
     return this.http.post(`${this.apiUrl}/api/careers`, options, {
       reportProgress: true,
       observe: 'events',
@@ -64,7 +64,7 @@ export class CareersService {
   // -----------------------DELETE------------------------------------
   // DELETE /api/careers/{id}
 
-  deleteCareerId(id) {
+  delete(id) {
     return this.http.delete(`${this.apiUrl}/api/careers/${id}`);
   }
 

@@ -18,12 +18,7 @@
                                 <th scope="col">Họ tên</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Số điện thoai</th>
-                                <th scope="col">Học vấn</th>
-                                <th scope="col">Kinh nghiệm</th>
-                                <th scope="col">Thời gian làm việc</th>
-                                <th scope="col">Giới tính</th>
-                                <th scope="col">Địa chỉ</th>
-                                <th scope="col">Tuổi</th>
+                                <th scope="col">Vị trí ứng tuyển</th>
                                 <th scope="col">CV</th>
                             </tr>
                         </thead>
@@ -33,13 +28,7 @@
                                 <td>{{r.full_name}}</td>
                                 <td>{{r.email}}</td>
                                 <td>{{r.number}}</td>
-                                <td>{{r.education}}</td>
-                                <td>{{r.job_level}}</td>
-                                <!-- Exp-lever -->
-                                <td>{{r.time_of_work}}</td>
-                                <td>{{r.gender}}</td>
                                 <td>{{r.address}}</td>
-                                <td>{{r.age}}</td>
                                 <td>CV download</td>
                             </tr>
                         </tbody>
@@ -63,56 +52,41 @@
 <!-- Modal -->
 
 <div bsModal #add="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Thêm mới</h4>
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body container ">
-                <form [formGroup]="addFrom" class="row">
-                    <!-- <div class="col-5"> -->
-                    <div class="form-group col-4">
+                <form [formGroup]="addFrom">
+                    <div class="form-group">
                         <label for="careersName">Họ tên</label>
                         <input type="text" class="form-control" formControlName="full_name">
                     </div>
-                    <div class="form-group col-3">
-                        <label for="careersName">Độ tuổi</label>
-                        <input type="text" class="form-control" formControlName="age">
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="careersName">Giới tính</label>
-                        <input type="text" class="form-control" formControlName="gender">
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group">
                         <label for="careersName">Email</label>
                         <input type="text" class="form-control" formControlName="email">
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group">
                         <label for="careersName">Số điện thoại</label>
                         <input type="text" class="form-control" formControlName="number">
                     </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Nơi ở hiện tại</label>
-                        <input type="text" class="form-control" formControlName="address">
+                    <div class="form-group ">
+                        <label for="careersName">Vị trí ứng tuyển</label>
+                        <select class="custom-select" formControlName="address">
+                            <option *ngFor="let r of recruitments" [value]="r.title">{{r.title}}</option>
+                        </select>
                     </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Học vấn</label>
-                        <input type="text" class="form-control" formControlName="education">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Kinh nghiệm làm việc</label>
-                        <input type="text" class="form-control" formControlName="job_level">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Thời gian làm việc</label>
-                        <input type="text" class="form-control" formControlName="time_of_work">
+                    <div class="form-group ">
+                        <label for="careersName">CV</label><br>
+                        <input type="file" (change)="handleFile($event)">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -122,56 +96,42 @@
 <!-- Modal -->
 
 <div bsModal #edit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Thông tin</h4>
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" class="row" *ngIf="Selected">
-                    <div class="form-group col-4">
+                <form [formGroup]="editFrom" *ngIf="Selected">
+                    <div class="form-group">
                         <label for="careersName">Họ tên</label>
                         <input type="text" class="form-control" formControlName="full_name" [value]="Selected.full_name">
                     </div>
-                    <div class="form-group col-3">
-                        <label for="careersName">Tuổi</label>
-                        <input type="text" class="form-control" placeholder="18" formControlName="age" [value]="Selected.age">
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="careersName">Giới tính</label>
-                        <input type="text" class="form-control" formControlName="gender" [value]="Selected.gender">
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group">
                         <label for="careersName">Email</label>
                         <input type="text" class="form-control" formControlName="email" [value]="Selected.email">
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group ">
                         <label for="careersName">Số điện thoại</label>
                         <input type="text" class="form-control" formControlName="number" [value]="Selected.number">
                     </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Nơi ở hiện tại</label>
-                        <input type="text" class="form-control" formControlName="address" [value]="Selected.address">
+                    <div class="form-group ">
+                        <label for="careersName">Vị trí ứng tuyển</label>
+                        <select class="custom-select" formControlName="address" [value]="Selected.address">
+                            <option *ngFor="let r of recruitments" [value]="r.title">{{r.title}}</option>
+                        </select>
                     </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Học vấn</label>
-                        <input type="text" class="form-control" formControlName="education" [value]="Selected.education">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Kinh nghiệm làm việc</label>
-                        <input type="text" class="form-control" formControlName="job_level" [value]="Selected.job_level">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="careersName">Thời gian làm việc</label>
-                        <input type="text" class="form-control" formControlName="time_of_work" [value]="Selected.age" time_of_work>
+                    <div class="form-group ">
+                        <label for="careersName">CV</label>
+                        <input type="file" (change)="handleFile($event)">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete(Selected.id)">Xóa</button>
+                <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

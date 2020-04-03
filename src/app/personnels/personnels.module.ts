@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { PersonnelsRoutingModule } from './personnels-routing.module';
@@ -20,9 +20,10 @@ import { JwtInterceptor } from '../_helpers/jwt.interceptor';
     HttpClientModule,
     ModalModule.forRoot()
   ],
-  providers:[
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-  ]
+  providers:[DatePipe],
+  // providers:[
+  //   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  //   // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  // ]
 })
 export class PersonnelsModule { }

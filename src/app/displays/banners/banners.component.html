@@ -90,7 +90,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -138,9 +138,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete(Selected.id)">Xóa</button>
+                <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

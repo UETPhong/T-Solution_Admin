@@ -9,105 +9,84 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CareersComponent implements OnInit {
 
-  careers: any;
+  all: any;
 
   constructor(
-    private car: CareersService,
+    private service: CareersService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
     this.buildFromAdd();
     this.buildFromEdit();
-    this.getCareers();
+    this.getAll();
   }
   // --------------------get-------------------
 
-  getCareers() {
-    this.careers = [];
-    this.car.getCareers().subscribe(r => {
-      this.careers = r['data']['apiResult'];
-      console.log(this.careers);
+  getAll() {
+    this.all = [];
+    this.service.getAll().subscribe(r => {
+      this.all = r['data']['apiResult'];
+      console.log(this.all);
     })
   }
 
   // --------------------delete-------------------
-  deleteCareers(id) {
+  delete(id) {
     // console.log(id);
-    this.car.deleteCareerId(id).subscribe(r => {
+    this.service.delete(id).subscribe(r => {
       console.log(r);
-      this.getCareers()
+      this.getAll()
     });
   }
   // --------------------post-------------------
   //form
   addForm: FormGroup;
-  addValue = {
-    // id: null,
-    name: '',
-    active: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
-  }
-  // addValue: any;
-
   buildFromAdd() {
     this.addForm = this.fb.group({
       name: '',
-      active: '',
     })
   }
-  addCareers() {
-    this.addValue.name = this.addForm.value.name;
-    this.addValue.active = this.addForm.value.active;
-    this.car.postCareer(this.addValue).subscribe(r => {
-      console.log(r);
-      this.getCareers();
-    });
+  addValue = {
+    name: '',
+    active: true,
   }
 
-
-
+  addNew() {
+    this.addValue.name = this.addForm.value.name;
+    this.service.post(this.addValue).subscribe(r => {
+      console.log(r);
+      this.getAll();
+    });
+  }
   // --------------------put-------------------
-  careerSelected: any;
-  getCareerS(id) {
-    this.careerSelected = [];
-    this.car.getCareerById(id).subscribe(r => {
-      this.careerSelected = r['data'];
-      console.log(this.careerSelected);
+  Selected: any;
+  getSelected(id) {
+    this.Selected = [];
+    this.service.getById(id).subscribe(r => {
+      this.Selected = r['data'];
     })
   }
   editFrom: FormGroup;
-  editValue = {
-    id: '',
-    name: '',
-    active: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
-  }
-
   buildFromEdit() {
     this.editFrom = this.fb.group({
       name: '',
-      active: true,
     })
   }
-
-  editCareer() {
-    this.editValue.id = this.careerSelected.id;
-    this.editValue.name = this.editFrom.value.name;
-    this.editValue.active = this.editFrom.value.active;
-    console.log(this.editValue);
-    this.car.putCareer(this.careerSelected.id, this.editValue).subscribe(r => {
+  editValue = {
+    id: '',
+    name: '',
+    active: true,
+  }
+  editSelected() {
+    this.editValue.id = this.Selected.id;
+    this.editValue.name = this.Selected.name;
+    this.editValue.active = this.Selected.active;
+    if (this.editFrom.value.name) { this.editValue.name = this.editFrom.value.name }
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
-      this.getCareers();
+      this.getAll();
+      this.Selected=[];
     })
-
   }
-
-
 }

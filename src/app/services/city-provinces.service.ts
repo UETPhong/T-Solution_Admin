@@ -22,10 +22,10 @@ export class CityProvincesService {
 
 
 
-  getCityProvinces() {
+  getAll() {
     return this.http.get(`${this.apiUrl}/api/cityProvinces`)
   }
-  getCityProvinceById(id) {
+  getById(id) {
     return this.http.get(`${this.apiUrl}/api/cityProvinces/${id}`)
   }
 
@@ -35,7 +35,7 @@ export class CityProvincesService {
   // -----------------------PUT------------------------------------
   // -----------------------PUT------------------------------------
   // PUT /api/cityProvinces/{id}  
-  putCityProvince(id, option) {
+  put(id, option) {
     return this.http.put(`${this.apiUrl}/api/cityProvinces/${id}`, option, {
       reportProgress: true,
       observe: 'events',
@@ -49,7 +49,7 @@ export class CityProvincesService {
   // -----------------------POT------------------------------------
   // POST /api/cityProvinces
 
-  postCityProvince(options) {
+  post(options) {
     return this.http.post(`${this.apiUrl}/api/cityProvinces`, options, {
       reportProgress: true,
       observe: 'events',
@@ -63,7 +63,7 @@ export class CityProvincesService {
   // -----------------------DELETE------------------------------------
   // DELETE /api/cityProvinces/{id}
 
-  deleteCityProvinceId(id) {
+  delete(id) {
     return this.http.delete(`${this.apiUrl}/api/cityProvinces/${id}`);
   }
 

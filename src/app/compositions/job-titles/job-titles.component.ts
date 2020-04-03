@@ -26,7 +26,7 @@ export class JobTitlesComponent implements OnInit {
 
   getAll() {
     this.all = [];
-    this.service.getJobTitles().subscribe(r => {
+    this.service.getAll().subscribe(r => {
       this.all = r['data']['apiResult'];
       console.log(this.all);
     })
@@ -34,7 +34,7 @@ export class JobTitlesComponent implements OnInit {
 
   getById(id) {
     this.Selected = [];
-    this.service.getJobTitleById(id).subscribe(r => {
+    this.service.getById(id).subscribe(r => {
       this.Selected = r['data'];
       console.log(this.Selected);
     })
@@ -42,7 +42,7 @@ export class JobTitlesComponent implements OnInit {
 
   // --------------------delete-------------------
   delete(id) {
-    this.service.deleteJobTitleById(id).subscribe(r => {
+    this.service.delete(id).subscribe(r => {
       console.log(r);
       this.getAll();
     })
@@ -53,25 +53,19 @@ export class JobTitlesComponent implements OnInit {
   buildFromAdd() {
     this.addFrom = this.fb.group({
       name: '',
-      active: true,
     })
   }
   //obj
   addValue = {
     // id: '',
     name: '',
-    active: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
+    active: true,
   }
 
   //add
   addNew() {
     this.addValue.name = this.addFrom.value.name;
-    this.addValue.active = this.addFrom.value.active;
-    this.service.postJobTitle(this.addValue).subscribe(r => {
+    this.service.post(this.addValue).subscribe(r => {
       console.log(r);
       this.getAll();
     })
@@ -83,29 +77,25 @@ export class JobTitlesComponent implements OnInit {
   buildFromEdit() {
     this.editFrom = this.fb.group({
       name: '',
-      active: true,
     })
   }
   //obj
   editValue = {
     id: '',
     name: '',
-    active: '',
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
+    active: true,
   }
 
   //add
   editSelected() {
     this.editValue.id = this.Selected.id;
-    this.editValue.name = this.editFrom.value.name;
-    this.editValue.active = this.editFrom.value.active;
-    console.log(this.editValue);
-    this.service.putJobTitle(this.Selected.id, this.editValue).subscribe(r => {
+    this.editValue.name = this.Selected.name;
+    this.editValue.active = this.Selected.active;
+    if(this.editFrom.value.name){this.editValue.name = this.editFrom.value.name}
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
       this.getAll();
+      this.Selected = [];
     })
   }
 }

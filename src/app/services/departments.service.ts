@@ -24,13 +24,13 @@
   // GET /api/department/export
 
   
-    getDepartments(){
+    getAll(){
       return this.http.get(`${this.apiUrl}/api/department`)
     }
-    getDepartmentById(id){
+    getById(id){
       return this.http.get(`${this.apiUrl}/api/department/${id}`)
     }
-    getDepartmentsExport(){
+    getExport(){
       return this.http.get(`${this.apiUrl}/api/department/export`)
     }
   
@@ -40,7 +40,7 @@
   // -----------------------PUT------------------------------------
   // -----------------------PUT------------------------------------
   // PUT /api/department/{id}  
-  putDepartment(id, options ){
+  put(id, options ){
     return this.http.put(`${this.apiUrl}/api/department/${id}`, options, {
       reportProgress: true,
       observe: 'events',
@@ -54,7 +54,7 @@
   // -----------------------POT------------------------------------
   // POST /api/department
   
-  postDepartment(options){
+  post(options){
     return this.http.post(`${this.apiUrl}/api/department`, options, {
       reportProgress: true,
       observe: 'events',
@@ -68,7 +68,7 @@
   // -----------------------DELETE------------------------------------
   // DELETE /api/department/{id}
   
-  deleteDepartmentId(id){
+  delete(id){
     return this.http.delete(`${this.apiUrl}/api/department/${id}`);
   }
   

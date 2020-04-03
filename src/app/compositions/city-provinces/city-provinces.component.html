@@ -21,7 +21,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let r of citys, let i = index" (dblclick)="[edit.show(),getById(r.id)]">
+                            <tr *ngFor="let r of all, let i = index" (dblclick)="[edit.show(),getById(r.id)]">
                                 <th scope="row">{{i}}</th>
                                 <td>{{r.name}}</td>
                                 <td>{{r.created_date}}</td>
@@ -60,18 +60,18 @@
                         <label for="careersName">Tỉnh/Thành phố</label>
                         <input type="text" class="form-control" formControlName="name">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="active">Trạng thái</label>
                         <select class="form-control" formControlName="active">
                             <option value="true">Hoạt động</option>
                             <option value="false">Không hoạt động</option>
                         </select>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -93,19 +93,19 @@
                         <label for="careersName">Tỉnh/Thành phố</label>
                         <input type="text" class="form-control" formControlName="name" [value]="Selected.name">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="active">Trạng thái</label>
                         <select class="form-control" formControlName="active" [value]="Selected.active">
                             <option value="true">Hoạt động</option>
                             <option value="false">Không hoạt động</option>
                         </select>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete(Selected.id)">Xóa</button>
+                <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -18,27 +18,20 @@
                                 <th scope="col">Ngành nghề</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Ngày sửa</th>
-                                <!-- <th scope="col">Chỉnh sửa</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let r of careers, let i = index" (dblclick)="[edit.show(),getCareerS(r.id)]">
+                            <tr *ngFor="let r of all, let i = index" (dblclick)="[edit.show(),getSelected(r.id)]">
                                 <th scope="row">{{i}}</th>
                                 <td>{{r.name}}</td>
                                 <td>{{r.created_date}}</td>
                                 <td>{{r.updated_date}}</td>
-                                <!-- <td><button (click)="deleteCareers(r.id)">Xóa</button></td> -->
-                                <!-- <td>{{r.position_name}}</td>
-                                <td>{{r.email}}</td>
-                                <td>0123456789</td> -->
                             </tr>
                         </tbody>
                     </table>
                     <ul class="pagination">
                         <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
+                        <li class="page-item active"> <a class="page-link" href="#">1</a> </li>
                         <li class="page-item"><a class="page-link" href="#">2</a></li>
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item"><a class="page-link" href="#">4</a></li>
@@ -65,18 +58,18 @@
                         <label for="careersName">Ngành nghề</label>
                         <input type="text" class="form-control" formControlName="name">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="active">Trạng thái</label>
                         <select class="form-control" formControlName="active">
                             <option value="true">Hoạt động</option>
                             <option value="false">Không hoạt động</option>
                         </select>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addCareers()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -93,24 +86,24 @@
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" *ngIf="careerSelected">
+                <form [formGroup]="editFrom" *ngIf="Selected">
                     <div class="form-group">
                         <label for="careersName">Ngành nghề</label>
-                        <input type="text" class="form-control" formControlName="name" [value]="careerSelected.name">
+                        <input type="text" class="form-control" formControlName="name" [value]="Selected.name">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="active">Trạng thái</label>
-                        <select class="form-control" formControlName="active" [value]="careerSelected.active">
+                        <select class="form-control" formControlName="active" [value]="Selected.active">
                             <option value="true">Hoạt động</option>
                             <option value="false">Không hoạt động</option>
                         </select>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="deleteCareers(careerSelected.id)">Xóa</button>
-                <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editCareer()">Save changes</button>
+                <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
+                <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
