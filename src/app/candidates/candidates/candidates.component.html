@@ -29,7 +29,9 @@
                                 <td>{{r.email}}</td>
                                 <td>{{r.number}}</td>
                                 <td>{{r.address}}</td>
-                                <td>CV download</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="ShowCV(r.path)">OpenCV</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -65,6 +65,7 @@
                     <div class="form-group">
                         <label for="careersName">Phòng ban trực thuộc</label>
                         <select class="custom-select" formControlName="parent_id">
+                            <option value="" >Không</option>
                             <option *ngFor="let r of all" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
@@ -104,6 +105,7 @@
                     <div class="form-group">
                         <label for="careersName">Phòng ban trực thuộc</label>
                         <select class="custom-select" formControlName="parent_id" [value]="Selected.parent_id">
+                            <option value="" >Không</option>
                             <option *ngFor="let r of all" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>

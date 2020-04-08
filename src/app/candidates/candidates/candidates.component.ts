@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CandidatesService, RecruitmentsService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { strict } from 'assert';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-candidates',
@@ -23,6 +25,12 @@ export class CandidatesComponent implements OnInit {
     this.getAll();
     this.recruitment.getAll().subscribe(r => this.recruitments = r['data']['apiResult'])
   }
+  //==========================
+
+  ShowCV(path) {
+    this.link = this.localLink.concat(path.slice(2).toString());
+    window.open(this.link, "_blank");
+  }
   //handleFile
   url: any = null;
   fileToUpload: File = null;
@@ -40,6 +48,8 @@ export class CandidatesComponent implements OnInit {
   // --------------------get-------------------
   all: any;
   Selected: any;
+  localLink = 'http://14.231.191.91:44351/';
+  link: string;
 
   getAll() {
     this.all = [];
@@ -125,6 +135,9 @@ export class CandidatesComponent implements OnInit {
     number: '',
     address: '',//vị trí ứng tuyển
     active: true,
+    path:'',
+    ext:'',
+    size:'',
   }
   //edit
   editSelected() {
@@ -133,6 +146,9 @@ export class CandidatesComponent implements OnInit {
     this.editValue.email = this.Selected.email;
     this.editValue.number = this.Selected.number;
     this.editValue.address = this.Selected.address;
+    this.editValue.path = this.Selected.path;
+    this.editValue.ext = this.Selected.ext;
+    this.editValue.size = this.Selected.size;
     if (this.editFrom.value.full_name) { this.editValue.full_name = this.editFrom.value.full_name; }
     if (this.editFrom.value.email) { this.editValue.email = this.editFrom.value.email; }
     if (this.editFrom.value.number) { this.editValue.number = this.editFrom.value.number; }
@@ -141,13 +157,13 @@ export class CandidatesComponent implements OnInit {
 
     this.service.putSelected(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
-      // if (this.fileToUpload !== null) {
-      //   const formData: FormData = new FormData();
-      //   formData.append('key', this.fileToUpload, this.fileToUpload.name)
-      //   this.service.putFile(this.Selected.id, formData).subscribe(r => {
-      //     console.log('SUCCESS', r);
-      //   })
-      // }
+      if (this.fileToUpload !== null) {
+        const formData: FormData = new FormData();
+        formData.append('key', this.fileToUpload, this.fileToUpload.name)
+        this.service.putFile(this.Selected.id, formData).subscribe(r => {
+          console.log('SUCCESS', r);
+        })
+      }
       this.getAll();
     })
   }

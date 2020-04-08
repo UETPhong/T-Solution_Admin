@@ -97,7 +97,7 @@ export class DepartmentsComponent implements OnInit {
     this.editValue.parent_id = this.Selected.parent_id;
     this.editValue.active = this.Selected.active;
     if (this.editFrom.value.name) { this.editValue.name = this.editFrom.value.name; }
-    if (this.editFrom.value.parent_id) { this.editValue.parent_id = this.editFrom.value.parent_id; }
+    if (this.editFrom.value.parent_id) { this.editValue.parent_id = this.editFrom.value.parent_id; } else { this.editValue.parent_id = '' }
     if (this.editFrom.value.active) { this.editValue.active = this.editFrom.value.active; }
     console.log(this.editValue);
     this.service.put(this.Selected.id, this.editValue).subscribe(r => {
