@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DepartmentsService } from '../../services'
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-departments',
@@ -8,20 +8,19 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./departments.component.css']
 })
 export class DepartmentsComponent implements OnInit {
+  @ViewChild('add') public add: ModalDirective;
+  @ViewChild('edit') public edit: ModalDirective;
+
 
   constructor(
     private service: DepartmentsService,
-    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.buildFromAdd();
-    this.buildFromEdit();
     this.getAll();
   }
   // --------------------get-------------------
   all: any;
-  Selected: any;
 
   getAll() {
     this.all = [];
@@ -31,13 +30,7 @@ export class DepartmentsComponent implements OnInit {
     })
   }
 
-  getById(id) {
-    this.Selected = [];
-    this.service.getById(id).subscribe(r => {
-      this.Selected = r['data'];
-      console.log(this.Selected);
-    })
-  }
+
 
   // --------------------delete-------------------
   delete(id) {
@@ -47,14 +40,7 @@ export class DepartmentsComponent implements OnInit {
     })
   }
   // --------------------post-------------------
-  //buildForm
-  addFrom: FormGroup;
-  buildFromAdd() {
-    this.addFrom = this.fb.group({
-      name: '',
-      parent_id: '',
-    })
-  }
+
   //obj
   addValue = {
     name: '',
@@ -64,24 +50,13 @@ export class DepartmentsComponent implements OnInit {
 
   //add
   addNew() {
-    this.addValue.name = this.addFrom.value.name;
-    this.addValue.parent_id = this.addFrom.value.parent_id;
+    if (this.addValue.name === '') { alert('Hãy điền tên phòng ban!'); return }
+    // if(this.addValue.parent_id === ''){alert('Hãy chọn phòng ban trực thuộc!'); return}
     console.log(this.addValue);
-    this.service.post(this.addValue).subscribe(r => {
-      console.log(r);
-      this.getAll();
-    })
+    this.service.post(this.addValue).subscribe(r => { this.add.hide(); this.getAll() })
   }
 
   // --------------------put-------------------
-  //buildForm
-  editFrom: FormGroup;
-  buildFromEdit() {
-    this.editFrom = this.fb.group({
-      name: '',
-      parent_id: '',
-    })
-  }
   //obj
   editValue = {
     id: '',
@@ -89,21 +64,25 @@ export class DepartmentsComponent implements OnInit {
     parent_id: '',
     active: true,
   }
-
-  //add
-  editSelected() {
-    this.editValue.id = this.Selected.id;
-    this.editValue.name = this.Selected.name;
-    this.editValue.parent_id = this.Selected.parent_id;
-    this.editValue.active = this.Selected.active;
-    if (this.editFrom.value.name) { this.editValue.name = this.editFrom.value.name; }
-    if (this.editFrom.value.parent_id) { this.editValue.parent_id = this.editFrom.value.parent_id; } else { this.editValue.parent_id = '' }
-    if (this.editFrom.value.active) { this.editValue.active = this.editFrom.value.active; }
-    console.log(this.editValue);
-    this.service.put(this.Selected.id, this.editValue).subscribe(r => {
-      console.log(r);
-      this.getAll();
-      this.Selected = [];
+  //getSelected
+  Selected: any;
+  getById(id) {
+    this.Selected = [];
+    this.service.getById(id).subscribe(r => {
+      this.Selected = r['data'];
+      this.editValue.id = this.Selected.id;
+      this.editValue.name = this.Selected.name;
+      this.editValue.parent_id = this.Selected.parent_id;
+      this.editValue.active = this.Selected.active;
     })
+  }
+
+
+  //edit
+  editSelected() {
+    if (this.editValue.name === '') { alert('Hãy điền tên phòng ban!'); return }
+    // if(this.editValue.parent_id === ''){alert('Hãy chọn phòng ban trực thuộc!'); return}
+    console.log(this.editValue);
+    this.service.put(this.Selected.id, this.editValue).subscribe(r => { this.edit.hide(); this.getAll(); })
   }
 }

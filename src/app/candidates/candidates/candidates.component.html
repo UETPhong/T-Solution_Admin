@@ -61,34 +61,37 @@
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body container ">
-                <form [formGroup]="addFrom">
+                <form>
                     <div class="form-group">
                         <label for="careersName">Họ tên</label>
-                        <input type="text" class="form-control" formControlName="full_name">
+                        <input type="text" class="form-control" (input)="addValue.full_name = $event.target.value">
                     </div>
                     <div class="form-group">
                         <label for="careersName">Email</label>
-                        <input type="text" class="form-control" formControlName="email">
+                        <input type="text" class="form-control" (input)="addValue.email = $event.target.value">
                     </div>
                     <div class="form-group">
                         <label for="careersName">Số điện thoại</label>
-                        <input type="text" class="form-control" formControlName="number">
+                        <input type="text" class="form-control" (input)="addValue.number = $event.target.value">
                     </div>
                     <div class="form-group ">
                         <label for="careersName">Vị trí ứng tuyển</label>
-                        <select class="custom-select" formControlName="address">
+                        <select class="custom-select" (input)="addValue.address = $event.target.value">
+                            <option value="">Vị trí ứng tuyển...</option>
                             <option *ngFor="let r of recruitments" [value]="r.title">{{r.title}}</option>
                         </select>
                     </div>
                     <div class="form-group ">
                         <label for="careersName">CV</label><br>
                         <input type="file" (change)="handleFile($event)">
+                        <br>
+                        <i>* .doc; .docx; .pdf và kích thước < 2MB</i>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -105,35 +108,37 @@
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" *ngIf="Selected">
+                <form *ngIf="Selected">
                     <div class="form-group">
                         <label for="careersName">Họ tên</label>
-                        <input type="text" class="form-control" formControlName="full_name" [value]="Selected.full_name">
+                        <input type="text" class="form-control" [(ngModel)]="editValue.full_name" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group">
                         <label for="careersName">Email</label>
-                        <input type="text" class="form-control" formControlName="email" [value]="Selected.email">
+                        <input type="text" class="form-control" [(ngModel)]="editValue.email" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group ">
                         <label for="careersName">Số điện thoại</label>
-                        <input type="text" class="form-control" formControlName="number" [value]="Selected.number">
+                        <input type="text" class="form-control" [(ngModel)]="editValue.number" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group ">
                         <label for="careersName">Vị trí ứng tuyển</label>
-                        <select class="custom-select" formControlName="address" [value]="Selected.address">
+                        <select class="custom-select" [(ngModel)]="editValue.address" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of recruitments" [value]="r.title">{{r.title}}</option>
                         </select>
                     </div>
                     <div class="form-group ">
                         <label for="careersName">CV</label>
-                        <input type="file" (change)="handleFile($event)">
+                        <input type="file" accept=".doc,.docx,.pdf" data-max-size="2048" (change)="handleFile($event)">
+                        <br>
+                        <i>* .doc; .docx; .pdf và kích thước < 2MB</i>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

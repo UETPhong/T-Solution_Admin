@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CareersService } from '../../services'
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Local } from 'protractor/built/driverProviders';
+import { ModalDirective } from 'ngx-bootstrap';
+// import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-careers',
@@ -8,21 +10,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./careers.component.css']
 })
 export class CareersComponent implements OnInit {
+  @ViewChild('add') public add: ModalDirective;
+  @ViewChild('edit') public edit: ModalDirective;
 
-  all: any;
+
 
   constructor(
     private service: CareersService,
-    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.buildFromAdd();
-    this.buildFromEdit();
     this.getAll();
   }
   // --------------------get-------------------
-
+  all: any;
   getAll() {
     this.all = [];
     this.service.getAll().subscribe(r => {
@@ -33,30 +34,23 @@ export class CareersComponent implements OnInit {
 
   // --------------------delete-------------------
   delete(id) {
-    // console.log(id);
     this.service.delete(id).subscribe(r => {
       console.log(r);
       this.getAll()
     });
   }
   // --------------------post-------------------
-  //form
-  addForm: FormGroup;
-  buildFromAdd() {
-    this.addForm = this.fb.group({
-      name: '',
-    })
-  }
   addValue = {
     name: '',
     active: true,
   }
 
   addNew() {
-    this.addValue.name = this.addForm.value.name;
+    if (this.addValue.name === '') { alert('Hãy nhập tên ngành nghề!'); return }
     this.service.post(this.addValue).subscribe(r => {
-      console.log(r);
+      this.add.hide();
       this.getAll();
+      // location.reload();
     });
   }
   // --------------------put-------------------
@@ -65,12 +59,8 @@ export class CareersComponent implements OnInit {
     this.Selected = [];
     this.service.getById(id).subscribe(r => {
       this.Selected = r['data'];
-    })
-  }
-  editFrom: FormGroup;
-  buildFromEdit() {
-    this.editFrom = this.fb.group({
-      name: '',
+      this.editValue.id = this.Selected.id;
+      this.editValue.name = this.Selected.name;
     })
   }
   editValue = {
@@ -79,14 +69,11 @@ export class CareersComponent implements OnInit {
     active: true,
   }
   editSelected() {
-    this.editValue.id = this.Selected.id;
-    this.editValue.name = this.Selected.name;
-    this.editValue.active = this.Selected.active;
-    if (this.editFrom.value.name) { this.editValue.name = this.editFrom.value.name }
+    if (this.editValue.name === '') { alert('Hãy nhập tên ngành nghề!'); return }
     this.service.put(this.Selected.id, this.editValue).subscribe(r => {
-      console.log(r);
+      this.edit.hide();
       this.getAll();
-      this.Selected=[];
+      // location.reload();
     })
   }
 }

@@ -57,30 +57,23 @@
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addFrom">
+                <form>
                     <div class="form-group">
                         <label for="careersName">Phòng ban</label>
-                        <input type="text" class="form-control" formControlName="name">
+                        <input type="text" class="form-control" [(ngModel)]="addValue.name" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group">
                         <label for="careersName">Phòng ban trực thuộc</label>
-                        <select class="custom-select" formControlName="parent_id">
+                        <select class="custom-select" [(ngModel)]="addValue.parent_id" [ngModelOptions]="{standalone: true}">
                             <option value="" >Không</option>
                             <option *ngFor="let r of all" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="active">Trạng thái</label>
-                        <select class="form-control" formControlName="active">
-                            <option value="true">Hoạt động</option>
-                            <option value="false">Không hoạt động</option>
-                        </select>
-                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -97,31 +90,24 @@
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" *ngIf="Selected">
+                <form *ngIf="Selected">
                     <div class="form-group">
                         <label for="careersName">Phòng ban</label>
-                        <input type="text" class="form-control" formControlName="name" [value]="Selected.name">
+                        <input type="text" class="form-control" [(ngModel)]="editValue.name" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group">
                         <label for="careersName">Phòng ban trực thuộc</label>
-                        <select class="custom-select" formControlName="parent_id" [value]="Selected.parent_id">
+                        <select class="custom-select" [(ngModel)]="editValue.parent_id" [ngModelOptions]="{standalone: true}">
                             <option value="" >Không</option>
                             <option *ngFor="let r of all" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="active">Trạng thái</label>
-                        <select class="form-control" formControlName="active" [value]="Selected.active">
-                            <option value="true">Hoạt động</option>
-                            <option value="false">Không hoạt động</option>
-                        </select>
-                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

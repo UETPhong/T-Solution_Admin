@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let r of all, let i = index" (dblclick)="[detail.show(),getById(r.id)]">
+                            <tr *ngFor="let r of all, let i = index" (dblclick)="[edit.show(),getById(r.id)]">
                                 <th scope="row">{{i}}</th>
                                 <td>{{r.full_name}}</td>
                                 <td>{{r.department_name}}</td>
@@ -67,35 +67,34 @@
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addFrom" class="container row">
+                <form class="container row">
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput1">Tên đăng nhập</label>
-                        <input type="text" class="form-control" placeholder="username" formControlName="username">
+                        <input type="text" class="form-control" placeholder="username" [(ngModel)]="addValue.username" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput2">Mã nhân viên</label>
-                        <input type="text" class="form-control" placeholder="code" formControlName="code">
+                        <input type="text" class="form-control" placeholder="code" [(ngModel)]="addValue.code" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput3">Email</label>
-                        <input type="email" class="form-control" placeholder="name@example.com" formControlName="email">
+                        <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="addValue.email" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput12">Số điện thoại</label>
-                        <input type="email" class="form-control" placeholder="0123456" formControlName="phone">
+                        <input type="email" class="form-control" placeholder="0123456" [(ngModel)]="addValue.phone" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput4">Họ tên</label>
-                        <input type="text" class="form-control" placeholder="full name" formControlName="full_name">
+                        <input type="text" class="form-control" placeholder="full name" [(ngModel)]="addValue.full_name" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput5">Ngày sinh</label>
-                        <input type="date" class="input-group-text" [value]="now" min="1990-01-01" max="2020-12-31" formControlName="birth_date">
+                        <input type="date" class="input-group-text" min="1990-01-01" max="2020-12-31" [(ngModel)]="addValue.birth_date" [ngModelOptions]="{standalone: true}">
                     </div>
-
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput6">Giới tính</label>
-                        <select class="custom-select" formControlName="gender">
+                        <select class="custom-select" [(ngModel)]="addValue.gender" [ngModelOptions]="{standalone: true}">
                             <option value="nam">nam</option>
                             <option value="nữ">nữ</option>
                             <option value="Không xác định">Không xác định</option>
@@ -103,50 +102,50 @@
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput7">Nơi ở hiện tại</label>
-                        <select class="custom-select" formControlName="address">
+                        <select class="custom-select" [(ngModel)]="addValue.current_address" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of city_province" [value]="r.name">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput13">Phân quyền</label>
-                        <select class="custom-select" formControlName="role_id">
+                        <select class="custom-select" [(ngModel)]="addValue.role_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of roles" [value]="r.id">{{r.code}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput11">Chức danh</label>
-                        <select class="custom-select" formControlName="job_title_id">
+                        <select class="custom-select" [(ngModel)]="addValue.job_title_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of jobtitles" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput12">Chức vụ</label>
-                        <select class="custom-select" formControlName="position_id">
+                        <select class="custom-select" [(ngModel)]="addValue.position_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of jobpositions" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput10">Phòng ban</label>
-                        <select class="custom-select" formControlName="department_id">
+                        <select class="custom-select" [(ngModel)]="addValue.department_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of departments" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput8">Quê quán</label>
-                        <select class="custom-select" formControlName="current_address">
+                        <select class="custom-select" [(ngModel)]="addValue.address" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of city_province" [value]="r.name">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-4">
                         <label for="exampleFormControlInput9">Mô tả</label>
                         <br>
-                        <textarea name="describe" cols="70" rows="4" formControlName="description"></textarea>
+                        <textarea name="describe" cols="70" rows="4" [(ngModel)]="addValue.description" [ngModelOptions]="{standalone: true}"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
             </div>
         </div>
     </div>
@@ -155,42 +154,42 @@
 <!-- /.modal -->
 <!-- Thông tin nhân sự -->
 
-<div bsModal #detail="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div bsModal #edit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Thông tin</h4>
-                <button type="button" class="close" (click)="detail.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" class="container row" *ngIf="Selected">
+                <form class="container row" *ngIf="Selected">
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput1">Tên đăng nhập</label>
                         <input type="text" class="form-control" placeholder="username" [value]="Selected.username" readonly>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput2">Mã nhân viên</label>
-                        <input type="text" class="form-control" placeholder="code" [value]="Selected.code" formControlName="code">
+                        <input type="text" class="form-control" placeholder="code" [(ngModel)]="editValue.code" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput3">Email</label>
-                        <input type="email" class="form-control" placeholder="name@example.com" [value]="Selected.email" formControlName="email">
+                        <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="editValue.email" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput12">Số điện thoại</label>
-                        <input type="email" class="form-control" placeholder="0123456" [value]="Selected.phone" formControlName="phone">
+                        <input type="email" class="form-control" placeholder="0123456" [(ngModel)]="editValue.phone" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput4">Họ tên</label>
-                        <input type="text" class="form-control" placeholder="full name" [value]="Selected.full_name" formControlName="full_name">
+                        <input type="text" class="form-control" placeholder="full name" [(ngModel)]="editValue.full_name" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput5">Ngày sinh</label>
-                        <input type="date" class="input-group-text" [value]="Selected.birth_date" min="1990-01-01" max="2020-12-31" formControlName="birth_date">
+                        <input type="date" class="input-group-text" min="1990-01-01" max="2020-12-31" [(ngModel)]="editValue.birth_date" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput6">Giới tính</label>
-                        <select class="custom-select" formControlName="gender" [value]="Selected.gender">
+                        <select class="custom-select" [(ngModel)]="editValue.gender" [ngModelOptions]="{standalone: true}">
                             <option value="nam">nam</option>
                             <option value="nữ">nữ</option>
                             <option value="Không xác định">Không xác định</option>
@@ -198,51 +197,51 @@
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput7">Nơi ở hiện tại </label>
-                        <select class="custom-select" [value]="Selected.address" formControlName="address">
+                        <select class="custom-select" [(ngModel)]="editValue.current_address" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of city_province" [value]="r.name">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput13">Phân quyền</label>
-                        <select class="custom-select" [value]="Selected.role_id" formControlName="role_id">
+                        <select class="custom-select" [(ngModel)]="editValue.role_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of roles" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput11">Chức danh</label>
-                        <select class="custom-select" [value]="Selected.job_title_id" formControlName="job_title_id">
+                        <select class="custom-select" [(ngModel)]="editValue.job_title_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of jobtitles" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput12">Chức vụ</label>
-                        <select class="custom-select" [value]="Selected.position_id" formControlName="position_id">
+                        <select class="custom-select" [(ngModel)]="editValue.position_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of jobpositions" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput10">Phòng ban</label>
-                        <select class="custom-select" [value]="Selected.department_id" formControlName="department_id">
+                        <select class="custom-select" [(ngModel)]="editValue.department_id" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of departments" [value]="r.id">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-3">
                         <label for="exampleFormControlInput8">Quê quán</label>
-                        <select class="custom-select" [value]="Selected.current_address" formControlName="current_address">
+                        <select class="custom-select" [(ngModel)]="editValue.address" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let r of city_province" [value]="r.name">{{r.name}}</option>
                         </select>
                     </div>
                     <div class="form-group col-8">
                         <label for="exampleFormControlInput9">Mô tả</label>
                         <br>
-                        <textarea name="describe" cols="70" rows="4" [value]="Selected.description" formControlName="description"></textarea>
+                        <textarea name="describe" cols="70" rows="4" [(ngModel)]="editValue.description" [ngModelOptions]="{standalone: true}"></textarea>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete(Selected.id)">Xóa</button>
-                <button type="button" class="btn btn-secondary" (click)="detail.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[editSelected(),detail.hide()]">Save changes</button>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-secondary " (click)="delete(Selected.id) ">Xóa</button>
+                <button type="button " class="btn btn-secondary " (click)="edit.hide()">Close</button>
+                <button type="button " class="btn btn-primary " (click)="editSelected()">Save changes</button>
             </div>
         </div>
     </div>

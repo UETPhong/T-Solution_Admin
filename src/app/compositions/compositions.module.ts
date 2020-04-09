@@ -9,15 +9,22 @@ import { JobPositonsComponent } from './job-positons/job-positons.component';
 import { CareersComponent } from './careers/careers.component';
 import { CityProvincesComponent } from './city-provinces/city-provinces.component';
 import { ModalModule } from 'ngx-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [DepartmentsComponent, JobTitlesComponent, JobPositonsComponent, CareersComponent, CityProvincesComponent],
+  declarations: [
+    DepartmentsComponent, 
+    JobTitlesComponent, 
+    JobPositonsComponent, 
+    CareersComponent, 
+    CityProvincesComponent
+  ],
   imports: [
     CommonModule,
     CompositionsRoutingModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
+    FormsModule,
     ModalModule.forRoot()
   ]
 })

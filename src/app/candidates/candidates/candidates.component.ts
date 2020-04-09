@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CandidatesService, RecruitmentsService } from '../../services';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { strict } from 'assert';
-import { stringify } from 'querystring';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-candidates',
@@ -20,18 +19,20 @@ export class CandidatesComponent implements OnInit {
   recruitments: any;
 
   ngOnInit(): void {
-    this.buildFromAdd();
-    this.buildFromEdit();
     this.getAll();
     this.recruitment.getAll().subscribe(r => this.recruitments = r['data']['apiResult'])
   }
-  //==========================
 
+
+  //CV
+  localLink = 'http://14.231.191.91:44351/';
+  link: string;
   ShowCV(path) {
     this.link = this.localLink.concat(path.slice(2).toString());
     window.open(this.link, "_blank");
   }
-  //handleFile
+
+  //handleFileUpload
   url: any = null;
   fileToUpload: File = null;
   handleFile(event) {
@@ -42,15 +43,12 @@ export class CandidatesComponent implements OnInit {
         this.url = event.target.result;
       }
       this.fileToUpload = event.target.files.item(0);
-      console.log('file', this.fileToUpload);
     }
   }
   // --------------------get-------------------
   all: any;
-  Selected: any;
-  localLink = 'http://14.231.191.91:44351/';
-  link: string;
 
+  submitted = false;
   getAll() {
     this.all = [];
     this.service.getAll().subscribe(r => {
@@ -58,15 +56,6 @@ export class CandidatesComponent implements OnInit {
       console.log(this.all);
     })
     this.url = null;
-    this.Selected = null;
-  }
-
-  getById(id) {
-    this.Selected = [];
-    this.service.getById(id).subscribe(r => {
-      this.Selected = r['data'];
-      console.log(this.Selected);
-    })
   }
 
   // --------------------delete-------------------
@@ -79,16 +68,8 @@ export class CandidatesComponent implements OnInit {
 
 
   // --------------------post-------------------
-  //buildForm
-  addFrom: FormGroup;
-  buildFromAdd() {
-    this.addFrom = this.fb.group({
-      full_name: '',
-      email: '',
-      number: '',
-      address: '',//vị trí ứng tuyển
-    })
-  }
+  //handleModal
+  @ViewChild('add') public add: ModalDirective;
 
   //obj
   addValue = {
@@ -101,32 +82,31 @@ export class CandidatesComponent implements OnInit {
 
   //add
   addNew() {
-    this.addValue.full_name = this.addFrom.value.full_name;
-    this.addValue.email = this.addFrom.value.email;
-    this.addValue.number = this.addFrom.value.number;
-    this.addValue.address = this.addFrom.value.address;
+    // Kiểm tra đầy đủ thông tin, thông báo lỗi
+    this.submitted = true;
+    if (this.addValue.full_name === '') { alert('Hãy điền họ tên của bạn'); return }
+    if (this.addValue.email === '') { alert('Hãy điền email của bạn'); return }
+    if (this.addValue.number === '') { alert('Hãy điền số điện thoại của bạn'); return }
+    if (this.addValue.address === '') { alert('Hãy chọn vị trí ứng tuyển của bạn'); return }
+    if (this.fileToUpload === null) { alert('Vui lòng chọn file CV của bạn!'); return; }
+    if (this.fileToUpload.size > 2100000) { alert('File quá lớn!'); return; }
+    //Gửi dữ liệu mảng lên server
     this.service.post(this.addValue).subscribe(r => {
+      //UploadFile
       if (this.fileToUpload !== null) {
         const formData: FormData = new FormData();
         formData.append('key', this.fileToUpload, this.fileToUpload.name)
         this.service.postFile(r['data']['id'], formData).subscribe(r => {
         })
       }
-      this.getAll();
     })
+    this.add.hide();
+    location.reload();
   }
 
   // --------------------put-------------------
-  //buildForm
-  editFrom: FormGroup;
-  buildFromEdit() {
-    this.editFrom = this.fb.group({
-      full_name: '',
-      email: '',
-      number: '',
-      address: '',//vị trí ứng tuyển
-    })
-  }
+  //handleModal
+  @ViewChild('edit') public edit: ModalDirective;
   //obj
   editValue = {
     id: '',
@@ -135,37 +115,47 @@ export class CandidatesComponent implements OnInit {
     number: '',
     address: '',//vị trí ứng tuyển
     active: true,
-    path:'',
-    ext:'',
-    size:'',
+    path: '',
+    ext: '',
+    size: '',
+  }
+  //Get Selected 
+  Selected: any;
+  getById(id) {
+    this.Selected = [];
+    this.service.getById(id).subscribe(r => {
+      this.Selected = r['data'];
+      this.editValue.id = this.Selected.id;
+      this.editValue.full_name = this.Selected.full_name;
+      this.editValue.email = this.Selected.email;
+      this.editValue.number = this.Selected.number;
+      this.editValue.address = this.Selected.address;
+      this.editValue.path = this.Selected.path;
+      this.editValue.ext = this.Selected.ext;
+      this.editValue.size = this.Selected.size;
+    });
   }
   //edit
   editSelected() {
-    this.editValue.id = this.Selected.id;
-    this.editValue.full_name = this.Selected.full_name;
-    this.editValue.email = this.Selected.email;
-    this.editValue.number = this.Selected.number;
-    this.editValue.address = this.Selected.address;
-    this.editValue.path = this.Selected.path;
-    this.editValue.ext = this.Selected.ext;
-    this.editValue.size = this.Selected.size;
-    if (this.editFrom.value.full_name) { this.editValue.full_name = this.editFrom.value.full_name; }
-    if (this.editFrom.value.email) { this.editValue.email = this.editFrom.value.email; }
-    if (this.editFrom.value.number) { this.editValue.number = this.editFrom.value.number; }
-    if (this.editFrom.value.address) { this.editValue.address = this.editFrom.value.address; }
-    console.log('value', this.editValue);
+    // Kiểm tra đầy đủ thông tin, thông báo lỗi
+    this.submitted = true;
+    if (this.editValue.full_name === '') { alert('Hãy điền họ tên của bạn'); return }
+    if (this.editValue.email === '') { alert('Hãy điền email của bạn'); return }
+    if (this.editValue.number === '') { alert('Hãy điền số điện thoại của bạn'); return }
+    if (this.editValue.address === '') { alert('Hãy chọn vị trí ứng tuyển của bạn'); return }
+    if (this.fileToUpload !== null && this.fileToUpload.size > 2100000) { alert('File quá lớn!'); return; }
 
     this.service.putSelected(this.Selected.id, this.editValue).subscribe(r => {
-      console.log(r);
       if (this.fileToUpload !== null) {
         const formData: FormData = new FormData();
         formData.append('key', this.fileToUpload, this.fileToUpload.name)
         this.service.putFile(this.Selected.id, formData).subscribe(r => {
-          console.log('SUCCESS', r);
         })
       }
-      this.getAll();
     })
+    this.edit.hide();
+    location.reload();
+
   }
 }
 
