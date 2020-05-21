@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class RtHomePageComponent implements OnInit {
 
   constructor() { 
-    window.location.href = 'http://localhost:4201';
+    // window.location.href = 'http://localhost:4201';
+    window.location.href = 'http://14.231.191.91:8002/#/home';
   }
 
   ngOnInit(): void {

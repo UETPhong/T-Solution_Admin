@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecruitmentsService, CityProvincesService, JobPositionsService, JobTitlesService, CareersService } from '../../services';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { ModalDirective } from 'ngx-bootstrap';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 @Component({
   selector: 'app-recruitments',
@@ -10,6 +12,9 @@ import { DatePipe } from '@angular/common';
 })
 
 export class RecruitmentsComponent implements OnInit {
+  @ViewChild('add') public add: ModalDirective;
+  @ViewChild('edit') public edit: ModalDirective;
+  editor = ClassicEditor;
 
   constructor(
     private service: RecruitmentsService,
@@ -17,7 +22,6 @@ export class RecruitmentsComponent implements OnInit {
     private jobtitle: JobTitlesService,
     private jobposition: JobPositionsService,
     private city: CityProvincesService,
-    private fb: FormBuilder,
     private datePipe: DatePipe,
   ) { }
 
@@ -28,8 +32,6 @@ export class RecruitmentsComponent implements OnInit {
   now: string = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   ngOnInit(): void {
-    this.buildFromAdd();
-    this.buildFromEdit();
     this.jobtitle.getAll().subscribe(r => { this.jobtitles = r['data']['apiResult']; console.log('title', this.jobtitles); })
     this.career.getAll().subscribe(r => { this.careers = r['data']['apiResult']; console.log('title', this.careers); })
     this.jobposition.getAll().subscribe(r => { this.jobpositions = r['data']['apiResult']; console.log('position', this.jobpositions); })
@@ -52,9 +54,8 @@ export class RecruitmentsComponent implements OnInit {
     }
   }
   // --------------------get-------------------
-  all: any;
-  Selected: any;
 
+  all: any;
   getAll() {
     this.all = [];
     this.service.getAll().subscribe(r => {
@@ -65,14 +66,6 @@ export class RecruitmentsComponent implements OnInit {
     this.Selected = null;
   }
 
-  getById(id) {
-    this.Selected = [];
-    this.service.getById(id).subscribe(r => {
-      this.Selected = r['data'];
-      this.Selected.valid_date = this.datePipe.transform(this.Selected.valid_date, 'yyyy-MM-dd');
-      console.log('selected', this.Selected.valid_date);
-    })
-  }
 
   // --------------------delete-------------------
   delete(id) {
@@ -84,30 +77,9 @@ export class RecruitmentsComponent implements OnInit {
 
 
   // --------------------post-------------------
-  //buildForm
-  addFrom: FormGroup;
-  buildFromAdd() {
-    this.addFrom = this.fb.group({
-      title: '',
-      description: '',
-      work_required: '',
-      entitlements: '',
-      experience_required: '',
-      education: '',
-      job_level: '',
-      form_of_work: '',
-      contact: '',
-      salary: '',
-      quantity: '',
-      valid_date: '',
-      career_id: '',
-      city_province_id: '',
-    })
-  }
 
   //obj
   addValue = {
-    // id: '',
     title: '',
     description: '',
     work_required: '',
@@ -127,48 +99,28 @@ export class RecruitmentsComponent implements OnInit {
 
   //add
   addNew() {
-    this.addValue.title = this.addFrom.value.title;                             //Tiêu đề
-    this.addValue.description = this.addFrom.value.description;                 //Nội dung
-    this.addValue.work_required = this.addFrom.value.work_required;             //Yêu cầu công việc
-    this.addValue.entitlements = this.addFrom.value.entitlements;               //Quyền lợi
-    this.addValue.experience_required = this.addFrom.value.experience_required; //Yêu cầu kinh nghiệm
-    this.addValue.education = this.addFrom.value.education;                     //Học vấn
-    this.addValue.job_level = this.addFrom.value.job_level;                     //Vị trí làm việc
-    this.addValue.form_of_work = this.addFrom.value.form_of_work;               //Hình thức làm việc
-    this.addValue.contact = this.addFrom.value.contact;                         //Liên hệ
-    this.addValue.salary = this.addFrom.value.salary;                           //Lương
-    this.addValue.quantity = this.addFrom.value.quantity;                       //Số lượng
-    this.addValue.valid_date = this.addFrom.value.valid_date;                   // Ngày hết hạn
-    this.addValue.career_id = this.addFrom.value.career_id;                     // Ngày hết hạn
-    this.addValue.city_province_id = this.addFrom.value.city_province_id;       //Thành phố
-    console.log('addvalue', this.addValue);
-
+    if (this.addValue.title === '') { alert('Hãy điền tiêu đề'); return }
+    if (this.addValue.experience_required === '') { alert('Hãy điền yêu cầu kinh nghiệm'); return }
+    if (this.addValue.education === '') { alert('Hãy điền trình độ học vấn'); return }
+    if (this.addValue.job_level === '') { alert('Hãy điền chức danh làm việc'); return }
+    if (this.addValue.form_of_work === '') { alert('Hãy điền chức vụ làm việc'); return }
+    if (this.addValue.career_id === '') { alert('Hãy điền loại nghành nghề'); return }
+    if (this.addValue.city_province_id === '') { alert('Hãy điền tỉnh thành phố'); return }
+    if (this.addValue.salary === '') { alert('Hãy điền mức lương'); return }
+    if (this.addValue.valid_date === '') { alert('Hãy điền ngày hết hạn'); return }
+    if (this.addValue.quantity === '') { alert('Hãy điền số lượng'); return }
+    if (this.addValue.description === '') { alert('Hãy điền nội dung'); return }
+    if (this.addValue.work_required === '') { alert('Hãy điền yêu cầu công việc'); return }
+    if (this.addValue.entitlements === '') { alert('Hãy điền quyền lợi'); return }
+    if (this.addValue.contact === '') { alert('Hãy điền liên hệ'); return }
     this.service.post(this.addValue).subscribe(r => {
+      this.add.hide();
       this.getAll();
     })
   }
 
   // --------------------put-------------------
-  //buildForm
-  editFrom: FormGroup;
-  buildFromEdit() {
-    this.editFrom = this.fb.group({
-      title: '',
-      description: '',
-      work_required: '',
-      entitlements: '',
-      experience_required: '',
-      education: '',
-      job_level: '',
-      form_of_work: '',
-      contact: '',
-      salary: '',
-      quantity: '',
-      valid_date: '',
-      career_id: '',
-      city_province_id: '',
-    })
-  }
+
   //obj
   editValue = {
     id: '',
@@ -182,51 +134,58 @@ export class RecruitmentsComponent implements OnInit {
     form_of_work: '',
     contact: '',
     salary: '',
-    quantity: null,
+    quantity: '',
     valid_date: '',
     career_id: '',
     city_province_id: '',
     active: true,
   }
+
+  Selected: any;
+  getById(id) {
+    this.Selected = [];
+    this.service.getById(id).subscribe(r => {
+      this.Selected = r['data'];
+      this.Selected.valid_date = this.datePipe.transform(this.Selected.valid_date, 'yyyy-MM-dd');
+      this.editValue.id = this.Selected.id;
+      this.editValue.title = this.Selected.title;
+      this.editValue.description = this.Selected.description;
+      this.editValue.work_required = this.Selected.work_required;
+      this.editValue.entitlements = this.Selected.entitlements;
+      this.editValue.experience_required = this.Selected.experience_required;
+      this.editValue.education = this.Selected.education;
+      this.editValue.job_level = this.Selected.job_level;
+      this.editValue.form_of_work = this.Selected.form_of_work;
+      this.editValue.contact = this.Selected.contact;
+      this.editValue.salary = this.Selected.salary;
+      this.editValue.quantity = this.Selected.quantity;
+      this.editValue.valid_date = this.Selected.valid_date;
+      this.editValue.career_id = this.Selected.career_id;
+      this.editValue.city_province_id = this.Selected.city_province_id;
+    })
+  }
   //edit
   editSelected() {
-    this.editValue.id = this.Selected.id;
-    this.editValue.title = this.Selected.title;
-    this.editValue.description = this.Selected.description;
-    this.editValue.work_required = this.Selected.work_required;
-    this.editValue.entitlements = this.Selected.entitlements;
-    this.editValue.experience_required = this.Selected.experience_required;
-    this.editValue.education = this.Selected.education;
-    this.editValue.job_level = this.Selected.job_level;
-    this.editValue.form_of_work = this.Selected.form_of_work;
-    this.editValue.contact = this.Selected.contact;
-    this.editValue.salary = this.Selected.salary;
-    this.editValue.quantity = this.Selected.quantity;
-    this.editValue.valid_date = this.Selected.valid_date;
-    this.editValue.career_id = this.Selected.career_id;
-    this.editValue.city_province_id = this.Selected.city_province_id;
-    if (this.editFrom.value.title) { this.editValue.title = this.editFrom.value.title; }
-    if (this.editFrom.value.description) { this.editValue.description = this.editFrom.value.description; }
-    if (this.editFrom.value.work_required) { this.editValue.work_required = this.editFrom.value.work_required; }
-    if (this.editFrom.value.entitlements) { this.editValue.entitlements = this.editFrom.value.entitlements; }
-    if (this.editFrom.value.experience_required) { this.editValue.experience_required = this.editFrom.value.experience_required; }
-    if (this.editFrom.value.education) { this.editValue.education = this.editFrom.value.education; }
-    if (this.editFrom.value.job_level) { this.editValue.job_level = this.editFrom.value.job_level; }
-    if (this.editFrom.value.form_of_work) { this.editValue.form_of_work = this.editFrom.value.form_of_work; }
-    if (this.editFrom.value.contact) { this.editValue.contact = this.editFrom.value.contact; }
-    if (this.editFrom.value.salary) { this.editValue.salary = this.editFrom.value.salary; }
-    if (this.editFrom.value.quantity) { this.editValue.quantity = this.editFrom.value.quantity; }
-    if (this.editFrom.value.valid_date) { this.editValue.valid_date = this.editFrom.value.valid_date; }
-    if (this.editFrom.value.career_id) { this.editValue.career_id = this.editFrom.value.career_id; }
-    if (this.editFrom.value.city_province_id) { this.editValue.city_province_id = this.editFrom.value.city_province_id; }
-    console.log('value', this.editValue);
-    console.log('form', this.editFrom);
 
-
+    if (this.editValue.title === '') { alert('Hãy điền tiêu đề'); return }
+    if (this.editValue.experience_required === '') { alert('Hãy điền yêu cầu kinh nghiệm'); return }
+    if (this.editValue.education === '') { alert('Hãy điền trình độ học vấn'); return }
+    if (this.editValue.job_level === '') { alert('Hãy điền chức danh làm việc'); return }
+    if (this.editValue.form_of_work === '') { alert('Hãy điền chức vụ làm việc'); return }
+    if (this.editValue.career_id === '') { alert('Hãy điền loại nghành nghề'); return }
+    if (this.editValue.city_province_id === '') { alert('Hãy điền tỉnh thành phố'); return }
+    if (this.editValue.salary === '') { alert('Hãy điền mức lương'); return }
+    if (this.editValue.valid_date === '') { alert('Hãy điền ngày hết hạn'); return }
+    if (this.editValue.quantity === '') { alert('Hãy điền số lượng'); return }
+    if (this.editValue.description === '') { alert('Hãy điền nội dung'); return }
+    if (this.editValue.work_required === '') { alert('Hãy điền yêu cầu công việc'); return }
+    if (this.editValue.entitlements === '') { alert('Hãy điền quyền lợi'); return }
+    if (this.editValue.contact === '') { alert('Hãy điền liên hệ'); return }
     this.service.put(this.Selected.id, this.editValue).subscribe(r => {
-      console.log(r);
+      this.edit.hide();
       this.getAll();
     })
   }
+
 }
 

@@ -59,16 +59,17 @@
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body container ">
-                <form [formGroup]="addFrom" class="row">
+                <form class="row">
                     <div class="col-5">
                         <div class="form-group">
                             <label for="careersName">Tiêu đề(*)</label>
-                            <input type="text" class="form-control" formControlName="title">
+                            <input type="text" class="form-control" [(ngModel)]="addValue.title" [ngModelOptions]="{standalone: true}">
                         </div>
                         <div class="form-group">
                             <label for="careersName">Slogan(*)</label>
-                            <textarea cols="45" rows="12" formControlName="slogan"></textarea>
-                            <!-- <input type="text" class="form-control" formControlName="slogan"> -->
+                            <!-- <textarea cols="45" rows="12" [(ngModel)]="addValue.slogan" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="addValue.slogan" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                     </div>
                     <div class="col-7">
@@ -77,20 +78,17 @@
                             <div class="custom-file">
                                 <input type="file" (change)="handleFile($event)">
                             </div>
+                            <i>File không quá 2 MB</i>
                         </div>
                         <hr>
                         <br>
                         <img [src]="url" height="225" alt="img">
                     </div>
-                    <!-- <div class="form-group col">
-                        <label for="careersName">Nội dung</label>
-                        <textarea cols="124" rows="12"></textarea>
-                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -107,40 +105,38 @@
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" class="row" *ngIf="Selected">
+                <form class="row" *ngIf="Selected">
                     <div class="col-5">
                         <div class="form-group">
                             <label for="careersName">Tiêu đề(*)</label>
-                            <input type="text" class="form-control" formControlName="title" [value]="Selected.title">
+                            <input type="text" class="form-control" [(ngModel)]="editValue.title" [ngModelOptions]="{standalone: true}">
                         </div>
                         <div class="form-group">
                             <label for="careersName">Slogan(*)</label>
-                            <textarea cols="45" rows="12" formControlName="slogan" [value]="Selected.slogan"></textarea>
-                            <!-- <input type="text" class="form-control" formControlName="slogan" [value]="Selected.slogan"> -->
+                            <!-- <textarea cols="45" rows="12" [(ngModel)]="editValue.slogan" [ngModelOptions]=" {standalone: true} "></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="editValue.slogan" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                     </div>
-                    <div class="col-7">
-                        <div class="form-group">
-                            <label for="careersName">Chọn ảnh</label>
-                            <div class="custom-file">
-                                <input type="file" (change)="handleFile($event)">
+                    <div class="col-7 ">
+                        <div class="form-group ">
+                            <label for="careersName ">Chọn ảnh</label>
+                            <div class="custom-file ">
+                                <input type="file" (change)="handleFile($event) ">
                             </div>
+                            <i>File không quá 2 MB</i>
                         </div>
                         <hr>
                         <br>
-                        <img *ngIf="url !== null" [src]="url" height="225" alt="img">
-                        <img *ngIf="url === null" [src]="Selected.path" height="225" alt="img">
-                    </div>
-                    <!-- <div class="form-group col">
-                        <label for="careersName">Nội dung</label>
-                        <textarea cols="124" rows="12"></textarea>
-                    </div> -->
+                        <img *ngIf="url !== null " [src]="url " height="225 " alt="img">
+                        <img *ngIf="url === null " [src]="Selected.path " height="225 " alt="img">
+                    </div>>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
-                <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-secondary " (click)="[delete(Selected.id),edit.hide()] ">Xóa</button>
+                <button type="button " class="btn btn-secondary " (click)="edit.hide() ">Close</button>
+                <button type="button " class="btn btn-primary " (click)="editSelected() ">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

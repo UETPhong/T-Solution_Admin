@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ArticlesService } from '../../services';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { ModalDirective } from 'ngx-bootstrap';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 @Component({
   selector: 'app-articlecs',
@@ -8,15 +10,16 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./articlecs.component.css']
 })
 export class ArticlecsComponent implements OnInit {
+  @ViewChild('add') public add: ModalDirective;
+  @ViewChild('edit') public edit: ModalDirective;
+  editor = ClassicEditor;
+
 
   constructor(
     private service: ArticlesService,
-    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.buildFromAdd();
-    this.buildFromEdit();
     this.getAll();
   }
   //handleFile
@@ -35,8 +38,6 @@ export class ArticlecsComponent implements OnInit {
   }
   // --------------------get-------------------
   all: any;
-  Selected: any;
-
   getAll() {
     this.all = [];
     this.service.getArticles().subscribe(r => {
@@ -44,15 +45,6 @@ export class ArticlecsComponent implements OnInit {
       console.log(this.all);
     })
     this.url = null;
-    this.Selected = null;
-  }
-
-  getById(id) {
-    this.Selected = [];
-    this.service.getArticleById(id).subscribe(r => {
-      this.Selected = r['data'];
-      console.log(this.Selected);
-    })
   }
 
   // --------------------delete-------------------
@@ -66,14 +58,7 @@ export class ArticlecsComponent implements OnInit {
 
   // --------------------post-------------------
   //buildForm
-  addFrom: FormGroup;
-  buildFromAdd() {
-    this.addFrom = this.fb.group({
-      title: '',
-      description: '',
-      content: '',
-    })
-  }
+
 
   //obj
   addValue = {
@@ -86,19 +71,15 @@ export class ArticlecsComponent implements OnInit {
     path: '',
     ext: '',
     active: true,
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
   }
 
   //add
   addNew() {
-    this.addValue.title = this.addFrom.value.title;
-    this.addValue.description = this.addFrom.value.description;
-    this.addValue.content = this.addFrom.value.content;
-    // this.addValue.active = true;
-
+    if (this.addValue.title === '') { alert('Hãy nhập tiêu đề'); return }
+    if (this.addValue.description === '') { alert('Hãy nhập mô tả'); return }
+    if (this.addValue.content === '') { alert('Hãy nhập nội dung'); return }
+    if (this.fileToUpload === null) { alert('Vui lòng chọn file CV của bạn!'); return; }
+    if (this.fileToUpload.size > 2100000) { alert('File quá lớn!'); return; }
     this.service.postArticle(this.addValue).subscribe(r => {
       if (this.fileToUpload !== null) {
         const formData: FormData = new FormData();
@@ -107,19 +88,11 @@ export class ArticlecsComponent implements OnInit {
         })
       }
       this.getAll();
+      this.add.hide();
     })
   }
 
   // --------------------put-------------------
-  //buildForm
-  editFrom: FormGroup;
-  buildFromEdit() {
-    this.editFrom = this.fb.group({
-      title: '',
-      description: '',
-      content: '',
-    })
-  }
   //obj
   editValue = {
     id: '',
@@ -131,27 +104,32 @@ export class ArticlecsComponent implements OnInit {
     path: '',
     ext: '',
     active: true,
-    created_by: '',
-    created_date: '',
-    updated_by: '',
-    updated_date: '',
+
   }
+
+  Selected: any;
+  getById(id) {
+    this.Selected = [];
+    this.service.getArticleById(id).subscribe(r => {
+      this.Selected = r['data'];
+      this.editValue.id = this.Selected.id;
+      this.editValue.title = this.Selected.title;
+      this.editValue.description = this.Selected.description;
+      this.editValue.content = this.Selected.content;
+      this.editValue.thumbnail = this.Selected.thumbnail;
+      this.editValue.size = this.Selected.size;
+      this.editValue.path = this.Selected.path;
+      this.editValue.ext = this.Selected.ext;
+      this.editValue.id = this.Selected.id;
+    })
+  }
+
   //edit
   editSelected() {
-    this.editValue.id = this.Selected.id;
-    this.editValue.title = this.Selected.title;
-    this.editValue.description = this.Selected.description;
-    this.editValue.content = this.Selected.content;
-    this.editValue.thumbnail = this.Selected.thumbnail;
-    this.editValue.size = this.Selected.size;
-    this.editValue.path = this.Selected.path;
-    this.editValue.ext = this.Selected.ext;
-    this.editValue.id = this.Selected.id;
-    if (this.editFrom.value.title) { this.editValue.title = this.editFrom.value.title; }
-    if (this.editFrom.value.description) { this.editValue.description = this.editFrom.value.description; }
-    if (this.editFrom.value.content) { this.editValue.content = this.editFrom.value.content; }
-    console.log('value', this.editValue);
-
+    if (this.editValue.title === '') { alert('Hãy nhập tiêu đề'); return }
+    if (this.editValue.description === '') { alert('Hãy nhập mô tả'); return }
+    if (this.editValue.content === '') { alert('Hãy nhập nội dung'); return }
+    if (this.fileToUpload !== null && this.fileToUpload.size > 2100000) { alert('File quá lớn!'); return; }
     this.service.putArticle(this.Selected.id, this.editValue).subscribe(r => {
       console.log(r);
       if (this.fileToUpload !== null) {
@@ -160,6 +138,7 @@ export class ArticlecsComponent implements OnInit {
         this.service.putFile(this.Selected.id, formData).subscribe(r => {
         })
       }
+      this.edit.hide();
       this.getAll();
     })
   }

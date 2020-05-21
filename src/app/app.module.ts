@@ -32,6 +32,8 @@ import { AppAsideModule, AppBreadcrumbModule, AppHeaderModule, AppFooterModule, 
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 
 // Import 3rd party components
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -58,6 +60,7 @@ import { RtHomePageComponent } from './rt-home-page/rt-home-page.component';
     ChartsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CKEditorModule,
     // JwtModule.forRoot({
     //   config: {
     //     tokenGetter: function tokenGetter() {

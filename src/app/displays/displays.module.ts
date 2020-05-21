@@ -8,7 +8,10 @@ import { BannersComponent } from './banners/banners.component';
 import { ArticlecsComponent } from './articlecs/articlecs.component';
 import { RecruitmentsComponent } from './recruitments/recruitments.component';
 import { ModalModule } from 'ngx-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
+
 
 
 @NgModule({
@@ -16,7 +19,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     DisplaysRoutingModule,
-    ReactiveFormsModule,
+    CKEditorModule,
+    // ReactiveFormsModule,
+    FormsModule,
     ModalModule.forRoot()
   ],
   providers:[DatePipe],

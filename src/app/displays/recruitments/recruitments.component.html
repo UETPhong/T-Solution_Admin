@@ -50,6 +50,7 @@
     </div>
 </div>
 
+
 <!-- Modal -->
 
 <div bsModal #add="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addLabel" aria-hidden="true">
@@ -60,15 +61,16 @@
                 <button type="button" class="close" (click)="add.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body container ">
-                <form [formGroup]="addFrom" class="row">
+                <form class="row">
                     <div class="form-group col-12">
                         <label for="careersName">Tiêu đề(*)</label>
-                        <input type="text" class="form-control" formControlName="title">
+                        <input type="text" class="form-control" [(ngModel)]="addValue.title" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="col-8 row">
                         <div class="form-group col-4">
                             <label for="careersName">Yêu cầu kinh nghiệm</label>
-                            <select class="custom-select" formControlName="experience_required">
+                            <select class="custom-select" [(ngModel)]="addValue.experience_required" [ngModelOptions]="{standalone: true}">
+                                <option value="">Kinh nghiệm...</option>
                                 <option value="Chưa có kinh nghiệm">Chưa có kinh nghiệm</option>
                                 <option value="1 năm kinh nghiệm">1 năm kinh nghiệm</option>
                                 <option value="2 năm kinh nghiệm">2 năm kinh nghiệm</option>
@@ -79,8 +81,9 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Trình độ học vấn</label>
-                            <select class="custom-select" formControlName="education">
-                                <option value="Chưa có kinh nghiệm">Chưa có kinh nghiệm</option>
+                            <select class="custom-select" [(ngModel)]="addValue.education" [ngModelOptions]="{standalone: true}">
+                                <option value="">Học vấn...</option>
+                                <option value="Chưa có kinh nghiệm">Chưa có</option>
                                 <option value="Đại học">Đại học</option>
                                 <option value="Cao đẳng">Cao đẳng</option>
                                 <option value="Trung học phổ thông">Trung học phổ thông</option>
@@ -89,31 +92,36 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Chức danh làm việc </label>
-                            <select class="custom-select" formControlName="job_level">
+                            <select class="custom-select" [(ngModel)]="addValue.job_level" [ngModelOptions]="{standalone: true}">
+                                <option value="">Chức danh...</option>
                                 <option *ngFor="let r of jobtitles" [value]="r.name">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Chức vụ làm việc</label>
-                            <select class="custom-select" formControlName="form_of_work">
+                            <select class="custom-select" [(ngModel)]="addValue.form_of_work" [ngModelOptions]="{standalone: true}">
+                                <option value="">Chức vụ...</option>
                                 <option *ngFor="let r of jobpositions" [value]="r.name">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Loại ngành nghề</label>
-                            <select class="custom-select" formControlName="career_id">
+                            <select class="custom-select" [(ngModel)]="addValue.career_id" [ngModelOptions]="{standalone: true}">
+                                <option value="">Ngành nghề...</option>
                                 <option *ngFor="let r of careers" [value]="r.id">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Tỉnh/Thành phố</label>
-                            <select class="custom-select" formControlName="city_province_id">
+                            <select class="custom-select" [(ngModel)]="addValue.city_province_id" [ngModelOptions]="{standalone: true}">
+                                <option value="">Tỉnh thành...</option>
                                 <option *ngFor="let r of city_province" [value]="r.id">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Mức lương</label>
-                            <select class="custom-select" formControlName="salary">
+                            <select class="custom-select" [(ngModel)]="addValue.salary" [ngModelOptions]="{standalone: true}">
+                                <option value="">Mức lương...</option>
                                 <option value="3-5 triệu">3-5 triệu</option>
                                 <option value="5-7 triệu">5-7 triệu</option>
                                 <option value="7-10 triệu">7-10 triệu</option>
@@ -123,11 +131,12 @@
                         </div>
                         <div class="form-group col-5">
                             <label for="careersName">Ngày hết hạn</label>
-                            <input class="input-group-text" type="date" [value]="now" formControlName="valid_date">
+                            <input class="input-group-text" type="date" [(ngModel)]="addValue.valid_date" [ngModelOptions]="{standalone: true}">
                         </div>
                         <div class="form-group col-3">
                             <label for="careersName">Số lượng</label>
-                            <select class="custom-select" formControlName="quantity">
+                            <select class="custom-select" [(ngModel)]="addValue.quantity" [ngModelOptions]="{standalone: true}">
+                                <option value="">Số lượng...</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -140,28 +149,36 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="careersName">Yêu cầu công việc</label>
-                            <textarea cols="40" rows="3" formControlName="work_required"></textarea>
+                            <!-- <textarea cols="40" rows="3" [(ngModel)]="addValue.work_required" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="addValue.work_required" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                         <div class="form-group">
                             <label for="careersName">Quyền lợi</label>
-                            <textarea cols="40" rows="3" formControlName="entitlements"></textarea>
+                            <!-- <textarea cols="40" rows="3" [(ngModel)]="addValue.entitlements" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="addValue.entitlements" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                         <div class="form-group">
                             <label for="careersName">Liên hệ</label>
-                            <textarea cols="40" rows="2" formControlName="contact"></textarea>
+                            <!-- <textarea cols="40" rows="2" [(ngModel)]="addValue.contact" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="addValue.contact" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label for="careersName">Nội dung</label>
-                            <textarea cols="118" rows="5" formControlName="description"></textarea>
+                            <!-- <textarea cols="118" rows="5" [(ngModel)]="addValue.description" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="addValue.description" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="add.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[addNew(),add.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNew()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -178,15 +195,16 @@
                 <button type="button" class="close" (click)="edit.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editFrom" class="row" *ngIf="Selected">
+                <form class="row" *ngIf="Selected">
                     <div class="form-group col-12">
                         <label for="careersName">Tiêu đề(*)</label>
-                        <input type="text" class="form-control" formControlName="title" [value]="Selected.title">
+                        <input type="text" class="form-control" [(ngModel)]="editValue.title" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="col-8 row">
                         <div class="form-group col-4">
                             <label for="careersName">Yêu cầu kinh nghiệm</label>
-                            <select class="custom-select" formControlName="experience_required" [value]="Selected.experience_required">
+                            <select class="custom-select" [(ngModel)]="editValue.experience_required" [ngModelOptions]="{standalone: true}">
+                                <option value="">Kinh nghiệm...</option>
                                 <option value="Chưa có kinh nghiệm">Chưa có kinh nghiệm</option>
                                 <option value="1 năm kinh nghiệm">1 năm kinh nghiệm</option>
                                 <option value="2 năm kinh nghiệm">2 năm kinh nghiệm</option>
@@ -197,8 +215,9 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Trình độ học vấn</label>
-                            <select class="custom-select" formControlName="education" [value]="Selected.education">
-                                <option value="Chưa có kinh nghiệm">Chưa có kinh nghiệm</option>
+                            <select class="custom-select" [(ngModel)]="editValue.education" [ngModelOptions]="{standalone: true}">
+                                <option value="">Học vấn...</option>
+                                <option value="Chưa có kinh nghiệm">Chưa có</option>
                                 <option value="Đại học">Đại học</option>
                                 <option value="Cao đẳng">Cao đẳng</option>
                                 <option value="Trung học phổ thông">Trung học phổ thông</option>
@@ -207,31 +226,36 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Chức danh làm việc </label>
-                            <select class="custom-select" formControlName="job_level" [value]="Selected.job_level">
+                            <select class="custom-select" [(ngModel)]="editValue.job_level" [ngModelOptions]="{standalone: true}">
+                                <option value="">Chức danh...</option>
                                 <option *ngFor="let r of jobtitles" [value]="r.name">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Chức vụ làm việc</label>
-                            <select class="custom-select" formControlName="form_of_work" [value]="Selected.form_of_work">
+                            <select class="custom-select" [(ngModel)]="editValue.form_of_work" [ngModelOptions]="{standalone: true}">
+                                <option value="">Chức vụ</option>
                                 <option *ngFor="let r of jobpositions" [value]="r.name">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Loại ngành nghề</label>
-                            <select class="custom-select" formControlName="career_id" [value]="Selected.career_id">
+                            <select class="custom-select" [(ngModel)]="editValue.career_id" [ngModelOptions]="{standalone: true}">
+                                <option value="">Ngành nghề...</option>
                                 <option *ngFor="let r of careers" [value]="r.id">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Tỉnh/Thành phố</label>
-                            <select class="custom-select" formControlName="city_province_id" [value]="Selected.city_province_id">
+                            <select class="custom-select" [(ngModel)]="editValue.city_province_id" [ngModelOptions]="{standalone: true}">
+                                <option value="">Tỉnh thành...</option>
                                 <option *ngFor="let r of city_province" [value]="r.id">{{r.name}}</option>
                             </select>
                         </div>
                         <div class="form-group col-4">
                             <label for="careersName">Mức lương</label>
-                            <select class="custom-select" formControlName="salary" [value]="Selected.salary">
+                            <select class="custom-select" [(ngModel)]="editValue.salary" [ngModelOptions]="{standalone: true}">
+                                <option value="">Mức lương...</option>
                                 <option value="3-5 triệu">3-5 triệu</option>
                                 <option value="5-7 triệu">5-7 triệu</option>
                                 <option value="7-10 triệu">7-10 triệu</option>
@@ -241,11 +265,12 @@
                         </div>
                         <div class="form-group col-5">
                             <label for="careersName">Ngày hết hạn</label>
-                            <input type="date" class="input-group-text" [value]="Selected.valid_date" formControlName="valid_date">
+                            <input type="date" class="input-group-text" [(ngModel)]="editValue.valid_date" [ngModelOptions]="{standalone: true}">
                         </div>
                         <div class="form-group col-3">
                             <label for="careersName">Số lượng</label>
-                            <select class="custom-select" formControlName="quantity" [value]="Selected.quantity">
+                            <select class="custom-select" [(ngModel)]="editValue.quantity" [ngModelOptions]="{standalone: true}">
+                                <option value="">Số lượng...</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -258,21 +283,27 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="careersName">Yêu cầu công việc</label>
-                            <textarea cols="40" rows="3" formControlName="work_required" [value]="Selected.work_required"></textarea>
+                            <!-- <textarea cols="40" rows="3" [(ngModel)]="editValue.work_required" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="editValue.work_required" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                         <div class="form-group">
                             <label for="careersName">Quyền lợi</label>
-                            <textarea cols="40" rows="3" formControlName="entitlements" [value]="Selected.entitlements"></textarea>
+                            <!-- <textarea cols="40" rows="3" [(ngModel)]="editValue.entitlements" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="editValue.entitlements" [ngModelOptions]="{standalone: true}"></ckeditor>
+
                         </div>
                         <div class="form-group">
                             <label for="careersName">Liên hệ</label>
-                            <textarea cols="40" rows="2" formControlName="contact" [value]="Selected.contact"></textarea>
+                            <!-- <textarea cols="40" rows="2" [(ngModel)]="editValue.contact" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="editValue.contact" [ngModelOptions]="{standalone: true}"></ckeditor>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label for="careersName">Nội dung</label>
-                            <textarea cols="118" rows="5" formControlName="description" [value]="Selected.description"></textarea>
+                            <!-- <textarea cols="118" rows="5" [(ngModel)]="editValue.description" [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor [editor]="editor" [(ngModel)]="editValue.description" [ngModelOptions]="{standalone: true}"></ckeditor>
                         </div>
                     </div>
                 </form>
@@ -280,7 +311,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="[delete(Selected.id),edit.hide()]">Xóa</button>
                 <button type="button" class="btn btn-secondary" (click)="edit.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="[editSelected(),edit.hide()]">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="editSelected()">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
