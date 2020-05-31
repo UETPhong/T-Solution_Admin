@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ModalDirective } from 'ngx-bootstrap';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 
 @Component({
@@ -14,6 +16,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class PersonnelsComponent implements OnInit {
   @ViewChild('add') public add: ModalDirective;
   @ViewChild('edit') public edit: ModalDirective;
+  editor = ClassicEditor;
+
   roles: any;
   jobtitles: any;
   jobpositions: any;

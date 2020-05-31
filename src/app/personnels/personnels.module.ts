@@ -5,6 +5,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PersonnelsRoutingModule } from './personnels-routing.module';
 import { PersonnelsComponent } from './personnels/personnels.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 
 
 
@@ -13,7 +15,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     PersonnelsRoutingModule,
-    // ReactiveFormsModule,
+    CKEditorModule,
     FormsModule,
     ModalModule.forRoot()
   ],
